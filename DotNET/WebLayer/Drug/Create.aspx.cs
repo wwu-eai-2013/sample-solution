@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Pharmacy.BusinessLayer.Logic;
+using Pharmacy.BusinessLayer.Data;
 
 namespace WebLayer.Drug
 {
@@ -37,6 +39,33 @@ namespace WebLayer.Drug
                 ResultLabel.Text = String.Format("Drug not created: {0}", ex.Message);
                 ResultLabel.CssClass = "error";
             }
+        }
+
+        protected void prefillButton_Click(object sender, EventArgs e)
+        {
+            int parseResult;
+            if (!Int32.TryParse(PZNBox.Text, out parseResult))
+            {
+                return;
+            }
+
+            try
+            {
+                DrugInfo drugInfo = DrugInfoService.GetInfo(Int32.Parse(PZNBox.Text));
+                NameBox.Text = drugInfo.Name;
+                DescriptionBox.Text = drugInfo.Description;
+                // to make sure errors are not shown by accident
+                Validate();
+                ResultLabel.Text = "Prefilled data for drug.";
+                ResultLabel.CssClass = "success";
+            }
+            catch (ArgumentException ex)
+            {
+                ResultLabel.Text = ex.Message;
+                ResultLabel.CssClass = "error";
+            }
+
+
         }
 
     }

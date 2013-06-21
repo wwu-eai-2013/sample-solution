@@ -5,6 +5,7 @@
         <p class="label">PZN</p>
         <p class="value">
             <asp:TextBox ID="PZNBox" TextMode="Number" runat="server" />
+            <asp:Button ID="prefillButton" Text="Prefill" runat="server" OnClick="prefillButton_Click" />
             <asp:RequiredFieldValidator ID="PZNBoxValidator" runat="server" 
                 ControlToValidate="PZNBox" ErrorMessage="RequiredFieldValidator"
                 EnableClientScript="false">
