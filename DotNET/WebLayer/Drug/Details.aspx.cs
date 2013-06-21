@@ -14,11 +14,18 @@ namespace WebLayer.Drug
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (DateOfActionBox.Text == "")
+            if (DateOfActionBox.Text == "" && !IsPostBack)
             {
                 DateOfActionBox.Text = String.Format("{0:dd.MM.yyyy HH:mm}", DateTime.Now);
             }
             UpdateSuggestion();
+        }
+
+        private void Page_Error(object sender, EventArgs e)
+        {
+            Session["LastError"] = Server.GetLastError();
+            Server.ClearError();
+            Server.Transfer("~/Error.aspx");
         }
 
         private void UpdateSuggestion()
