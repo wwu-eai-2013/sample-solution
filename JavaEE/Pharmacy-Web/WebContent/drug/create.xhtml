@@ -13,9 +13,13 @@
           footerClass="form-footer">
           <h:outputLabel value="PZN" for="pzn" />
           <h:inputText id="pzn" value="#{createDrug.drug.pzn}">
-            <f:validator validatorId="de.java.PznValidator" />
+            <f:ajax listener="#{createDrug.pznChanged}" render="name" />
           </h:inputText>
-          <h:message for="pzn" />
+          <h:panelGroup>
+            <h:commandButton action="#{createDrug.prefill}" value="Prefill">
+            </h:commandButton>
+            <h:message for="pzn" />
+          </h:panelGroup>
           <h:outputLabel value="Name" for="name" />
           <h:inputText id="name" value="#{createDrug.drug.name}" />
           <h:message for="name" />

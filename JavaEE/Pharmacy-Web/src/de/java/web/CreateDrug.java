@@ -6,6 +6,8 @@ import javax.faces.bean.ManagedBean;
 
 import de.java.domain.Drug;
 import de.java.ejb.DrugService;
+import de.java.ejb.drug.info.DrugInfo;
+import de.java.ejb.drug.info.DrugInfoService;
 import de.java.web.util.Util;
 
 @ManagedBean
@@ -20,6 +22,9 @@ public class CreateDrug {
   @EJB
   private DrugService drugService;
 
+  @EJB
+  private DrugInfoService infoService;
+
   public Drug getDrug() {
     return drug;
   }
@@ -31,7 +36,23 @@ public class CreateDrug {
   public void setBatch(boolean batch) {
     this.batch = batch;
   }
-  
+
+  public void prefill() {
+    try{
+      DrugInfo info = infoService.getInfo(drug.getPzn());
+      drug.setName(info.getName());
+      drug.setDescription(info.getDescription());
+      errorMessage = null;
+    } catch(EJBException e){
+      errorMessage = Util.getCausingMessage(e);
+    }
+  }
+
+  public void pznChanged() {
+    // set dummy value for name
+    drug.setName("drug");
+  }
+
   public String persist() {
     // Action
     try{
