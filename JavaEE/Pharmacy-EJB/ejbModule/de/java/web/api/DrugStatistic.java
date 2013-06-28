@@ -1,8 +1,5 @@
 package de.java.web.api;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
 public class DrugStatistic {
 
   private int pzn;
