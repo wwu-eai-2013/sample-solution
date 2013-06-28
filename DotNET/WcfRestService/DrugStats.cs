@@ -52,7 +52,11 @@ namespace Pharmacy.RestLayer
 
         private static void ValidateDrugExists(Int32 pzn)
         {
-            if (DrugService.GetDrug(pzn) == default(Drug))
+            try
+            {
+                DrugService.GetDrug(pzn);
+            }
+            catch
             {
                 throw new WebFaultException(System.Net.HttpStatusCode.NotFound);
             }

@@ -49,7 +49,11 @@ namespace Pharmacy.RestLayer
 
         private static void ValidateOrderExists(Int32 orderId)
         {
-            if (OrderService.GetOrder(orderId) == default(ReplenishmentOrder))
+            try
+            {
+                OrderService.GetOrder(orderId);
+            }
+            catch
             {
                 throw new WebFaultException(System.Net.HttpStatusCode.NotFound);
             }
