@@ -64,7 +64,8 @@ public class AverageInventoryStatisticsServiceBean implements
       Map<Integer, Long> sumsFrom, Map<Integer, Long> sumsTo) {
     long inventoryAtFrom = sumOrZero(sumsFrom, pzn);
     long inventoryAtTo = sumOrZero(sumsTo, pzn);
-    long averageInventoryLevel = (inventoryAtFrom + inventoryAtTo) / 2;
+    double averageInventoryLevel = (inventoryAtFrom + inventoryAtTo) / 2.0;
+
     DrugStatistic drugStatistic = new DrugStatistic(pzn, averageInventoryLevel);
     return drugStatistic;
   }
