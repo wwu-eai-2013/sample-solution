@@ -17,7 +17,7 @@ import de.java.ejb.DrugService;
 import de.java.ejb.stats.AverageInventoryStatisticsService;
 
 @Path("drugstats")
-public class DrugResource {
+public class DrugStatsResource {
 
   @EJB
   private AverageInventoryStatisticsService service;
