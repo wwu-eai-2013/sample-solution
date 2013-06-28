@@ -34,7 +34,7 @@ public class AverageInventoryStatisticsServiceBean implements
 
     Collection<DrugStatistic> result = new ArrayList<>(allDrugs.size());
     for (Drug drug : allDrugs) {
-      result.add(createDrugStatistic(drug, sumsFrom, sumsTo));
+      result.add(createDrugStatistic(drug.getPzn(), sumsFrom, sumsTo));
     }
     return result;
   }
@@ -60,9 +60,8 @@ public class AverageInventoryStatisticsServiceBean implements
     return results;
   }
 
-  private DrugStatistic createDrugStatistic(Drug drug,
+  private DrugStatistic createDrugStatistic(int pzn,
       Map<Integer, Long> sumsFrom, Map<Integer, Long> sumsTo) {
-    int pzn = drug.getPzn();
     long inventoryAtFrom = sumOrZero(sumsFrom, pzn);
     long inventoryAtTo = sumOrZero(sumsTo, pzn);
     long averageInventoryLevel = (inventoryAtFrom + inventoryAtTo) / 2;
