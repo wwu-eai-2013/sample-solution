@@ -19,8 +19,8 @@ namespace Pharmacy.BusinessLayer.Logic
         {
             return new OrderStatistic
             {
-                OrderId = orderId,
-                Deviation = 42
+                orderId = orderId,
+                deviation = 42
             };
         }
     }

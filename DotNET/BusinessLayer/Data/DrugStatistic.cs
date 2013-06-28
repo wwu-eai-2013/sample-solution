@@ -9,7 +9,7 @@ namespace Pharmacy.BusinessLayer.Data
     
     public class DrugStatistic
     {
-        public Int32 Pzn { get; set; }
-        public Double AverageInventoryLevel { get; set; }
+        public Int32 pzn { get; set; }
+        public Double averageInventoryLevel { get; set; }
     }
 }

@@ -24,14 +24,14 @@ namespace Pharmacy.BusinessLayer.Logic
                     let sumFrom = tmpSumFrom == null ? 0 : tmpSumFrom
                     let tmpSumTo = d.Events.Where(e => e.DateOfAction <= toDate).Sum(e => e.Quantity)
                     let sumTo = tmpSumTo == null ? 0 : tmpSumTo
-                    select new DrugStatistic { Pzn = d.PZN, AverageInventoryLevel = (sumFrom + sumTo) / 2.0 };
+                    select new DrugStatistic { pzn = d.PZN, averageInventoryLevel = (sumFrom + sumTo) / 2.0 };
         }
 
         public static DrugStatistic GetStatistic(Int32 pzn, DateTime fromDate, DateTime toDate)
         {
             using (PharmacyContainer db = new PharmacyContainer())
             {
-                return GetAllStatistics(fromDate, toDate, db).Where(d => d.Pzn == pzn).First();
+                return GetAllStatistics(fromDate, toDate, db).Where(d => d.pzn == pzn).First();
             }
         }
     }
