@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Objects.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,17 +12,25 @@ namespace Pharmacy.BusinessLayer.Logic
     {
         public static ICollection<OrderStatistic> GetAllStatistics()
         {
-            return new List<OrderStatistic>();
+            using (PharmacyContainer db = new PharmacyContainer())
+            {
+                return GetAllStatistics(db).ToList();
+            }
         }
 
+        private static IQueryable<OrderStatistic> GetAllStatistics(PharmacyContainer db)
+        {
+            return from o in db.ReplenishmentOrderSet
+                   where o.State == OrderState.Finished
+                   select new OrderStatistic { orderId = o.Id, deviation = SqlFunctions.DateDiff("ss", o.ActualDelivery, o.ExpectedDelivery) };
+        }
 
         public static OrderStatistic GetStatistic(int orderId)
         {
-            return new OrderStatistic
+            using (PharmacyContainer db = new PharmacyContainer())
             {
-                orderId = orderId,
-                deviation = 42
-            };
+                return GetAllStatistics(db).Where(o => o.orderId == orderId).First();
+            }
         }
     }
 }

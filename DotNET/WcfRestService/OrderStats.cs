@@ -28,9 +28,9 @@ namespace Pharmacy.RestLayer
         /// </summary>
         /// <returns></returns>
         [WebGet(UriTemplate = "", ResponseFormat = System.ServiceModel.Web.WebMessageFormat.Json)]
-        public IList<OrderStatistic> GetCollection()
+        public ICollection<OrderStatistic> GetCollection()
         {
-            return new List<OrderStatistic>();
+            return OrderStatisticsService.GetAllStatistics();
         }
 
         /// <summary>
