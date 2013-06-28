@@ -53,11 +53,13 @@
     <Compile Include="Data\Drug.cs">
       <DependentUpon>Pharmacy.tt</DependentUpon>
     </Compile>
+    <Compile Include="Data\DrugStatistic.cs" />
     <Compile Include="Data\EntityExtension.cs" />
     <Compile Include="Data\InventoryEvent.cs">
       <DependentUpon>Pharmacy.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\OrderState.cs" />
+    <Compile Include="Data\OrderStatistic.cs" />
     <Compile Include="Data\Pharmacy.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -90,8 +92,10 @@
     </Compile>
     <Compile Include="Data\DrugInfo.cs" />
     <Compile Include="Logic\DrugInfoService.cs" />
+    <Compile Include="Logic\DrugStatisticsService.cs" />
     <Compile Include="Logic\OrderService.cs" />
     <Compile Include="Logic\DrugService.cs" />
+    <Compile Include="Logic\OrderStatisticsService.cs" />
     <Compile Include="Logic\Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
