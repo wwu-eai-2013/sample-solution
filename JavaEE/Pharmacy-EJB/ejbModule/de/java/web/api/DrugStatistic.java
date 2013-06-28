@@ -1,6 +1,10 @@
 package de.java.web.api;
 
-public class DrugStatistic {
+import java.io.Serializable;
+
+public class DrugStatistic implements Serializable {
+
+  private static final long serialVersionUID = 2349185609186l;
 
   private int pzn;
   private double averageInventoryLevel;
