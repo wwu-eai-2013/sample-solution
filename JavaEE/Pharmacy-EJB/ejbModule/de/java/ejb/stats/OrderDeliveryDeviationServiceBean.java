@@ -28,7 +28,14 @@ public class OrderDeliveryDeviationServiceBean implements
   }
 
   public OrderStatistic getStatistic(long orderId) {
-    return null;
+    return em
+        .createQuery(
+            // subtracting two dates automatically yields the difference in seconds
+            "select new de.java.web.api.OrderStatistic(o.id, o.actualDelivery - o.expectedDelivery)\n"
+                + "from ReplenishmentOrder o\n"
+                + "where o.state = de.java.domain.OrderState.FINISHED\n"
+                + "  and o.id = :orderId", OrderStatistic.class)
+        .setParameter("orderId", orderId).getSingleResult();
   }
 
 }
