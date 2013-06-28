@@ -51,7 +51,9 @@ namespace Pharmacy.RestLayer
         {
             try
             {
-                OrderService.GetOrder(orderId);
+                ReplenishmentOrder order = OrderService.GetOrder(orderId);
+                if (order.State != OrderState.Finished)
+                    throw new WebFaultException(System.Net.HttpStatusCode.NotFound);
             }
             catch
             {
