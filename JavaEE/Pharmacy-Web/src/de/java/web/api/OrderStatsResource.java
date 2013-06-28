@@ -11,6 +11,8 @@ import javax.ws.rs.core.MediaType;
 
 import org.jboss.resteasy.spi.NotFoundException;
 
+import de.java.domain.OrderState;
+import de.java.domain.ReplenishmentOrder;
 import de.java.ejb.ReplenishmentOrderService;
 import de.java.ejb.stats.OrderDeliveryDeviationService;
 
@@ -39,8 +41,11 @@ public class OrderStatsResource {
   }
 
   private void validateOrderExists(long orderId) {
-    if (orderService.getOrder(orderId) == null)
+    ReplenishmentOrder order = orderService.getOrder(orderId);
+    if (order == null)
       throw new NotFoundException(String.format("Order with id %s does not exist here", orderId));
+    if (order.getState() != OrderState.FINISHED)
+      throw new NotFoundException(String.format("Order with id %s is not finished yet", orderId));
   }
 
 }
