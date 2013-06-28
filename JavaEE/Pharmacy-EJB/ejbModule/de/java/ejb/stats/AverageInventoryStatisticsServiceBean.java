@@ -73,4 +73,27 @@ public class AverageInventoryStatisticsServiceBean implements
     return sums.containsKey(pzn) ? sums.get(pzn) : 0;
   }
 
+  public DrugStatistic getStatistic(int pzn, Date from, Date to) {
+    Map<Integer, Long> sumsFrom = getSumOfQuantities(pzn, from);
+    Map<Integer, Long> sumsTo = getSumOfQuantities(pzn, to);
+    return createDrugStatistic(pzn, sumsFrom, sumsTo);
+  }
+
+  private Map<Integer, Long> getSumOfQuantities(int pzn, Date before) {
+    List<Object[]> resultList = em
+        .createQuery(
+            "select d.pzn, sum(e.quantity) as inventoryLevel\n"
+                + "from Drug d\n"
+                + "join d.events e\n"
+                + "where d.pzn = :pzn and e.dateOfAction <= :upToDate\n"
+                + "group by d.pzn\n")
+        .setParameter("upToDate", before)
+        .setParameter("pzn", pzn)
+        .getResultList();
+    Map<Integer, Long> results = new HashMap<>();
+    for (Object[] result : resultList) {
+      results.put((Integer) result[0], (Long) result[1]);
+    }
+    return results;
+  }
 }

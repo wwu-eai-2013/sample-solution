@@ -11,6 +11,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.jboss.resteasy.spi.NotFoundException;
+
+import de.java.ejb.DrugService;
 import de.java.ejb.stats.AverageInventoryStatisticsService;
 
 @Path("drug")
@@ -18,6 +21,9 @@ public class DrugResource {
 
   @EJB
   private AverageInventoryStatisticsService service;
+
+  @EJB
+  private DrugService drugService;
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
@@ -33,7 +39,19 @@ public class DrugResource {
   @Path("{pzn}")
   @Produces(MediaType.APPLICATION_JSON)
   public DrugStatistic getStatistic(@PathParam("pzn") int pzn) {
-    return new DrugStatistic();
+
+    validateDrugExists(pzn);
+
+    Calendar cal = Calendar.getInstance();
+    Date toDate = cal.getTime();
+    cal.add(Calendar.DAY_OF_YEAR, -30);
+    Date fromDate = cal.getTime();
+    return service.getStatistic(pzn, fromDate, toDate);
+  }
+
+  private void validateDrugExists(int pzn) {
+    if (drugService.getDrug(pzn) == null)
+      throw new NotFoundException(String.format("Drug with pzn %s does not exist here", pzn));
   }
 
 }
