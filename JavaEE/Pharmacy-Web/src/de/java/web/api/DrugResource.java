@@ -16,7 +16,7 @@ import org.jboss.resteasy.spi.NotFoundException;
 import de.java.ejb.DrugService;
 import de.java.ejb.stats.AverageInventoryStatisticsService;
 
-@Path("drug")
+@Path("drugstats")
 public class DrugResource {
 
   @EJB
