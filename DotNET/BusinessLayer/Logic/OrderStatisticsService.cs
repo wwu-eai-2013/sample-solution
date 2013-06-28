@@ -22,7 +22,7 @@ namespace Pharmacy.BusinessLayer.Logic
         {
             return from o in db.ReplenishmentOrderSet
                    where o.State == OrderState.Finished
-                   select new OrderStatistic { orderId = o.Id, deviation = SqlFunctions.DateDiff("ss", o.ActualDelivery, o.ExpectedDelivery) };
+                   select new OrderStatistic { orderId = o.Id, deviation = SqlFunctions.DateDiff("ss", o.ExpectedDelivery, o.ActualDelivery) };
         }
 
         public static OrderStatistic GetStatistic(int orderId)
