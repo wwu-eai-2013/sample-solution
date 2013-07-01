@@ -43,7 +43,7 @@ public class OrderStatsServiceBean implements OrderStatsService {
   public double calculateAverageDeviation(List<WrappedOrderStatistic> stats) {
     long sum = 0;
     for (WrappedOrderStatistic stat : stats) {
-      sum += stat.getDeviation();
+      sum += Math.abs(stat.getDeviation());
     }
     return sum / stats.size();
   }
