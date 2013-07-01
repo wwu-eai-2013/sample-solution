@@ -22,6 +22,7 @@ namespace Pharmacy.BusinessLayer.Logic
         {
             return from o in db.ReplenishmentOrderSet
                    where o.State == OrderState.Finished
+                   // DateDiff function return the absolute difference in seconds
                    select new OrderStatistic { orderId = o.Id, deviation = SqlFunctions.DateDiff("ss", o.ExpectedDelivery, o.ActualDelivery) };
         }
 
