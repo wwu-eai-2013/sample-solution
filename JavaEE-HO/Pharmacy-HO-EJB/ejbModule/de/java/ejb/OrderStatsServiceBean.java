@@ -27,7 +27,7 @@ public class OrderStatsServiceBean implements OrderStatsService {
   }
 
   public List<WrappedOrderStatistic> getStats() {
-    ArrayList<WrappedOrderStatistic> result = new ArrayList<WrappedOrderStatistic>();
+    ArrayList<WrappedOrderStatistic> result = new ArrayList<>();
     for (OrderStatistic statAtJava : javaOrderStats.getAllStatistics()) {
       result.add(new WrappedOrderStatistic("JaVa", statAtJava));
     }
