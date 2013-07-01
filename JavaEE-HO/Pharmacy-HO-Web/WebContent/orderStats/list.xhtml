@@ -12,18 +12,18 @@
       columnClasses="data-cell,data-cell,data-cell"
       rendered="#{not empty orderStatsList.stats}">
       <h:column>
+        <f:facet name="header">Subsidiary</f:facet>
+        #{cur.subsidiary}
+      </h:column>
+      <h:column>
         <f:facet name="header">ID</f:facet>
-      #{cur.id}
-    </h:column>
+        #{cur.id}
+      </h:column>
       <h:column>
         <f:facet name="header">Deviation</f:facet>
-      #{cur.deviation}
-    </h:column>
-    <h:column>
-      <h:link outcome="/orderStats/details.xhtml" value="Details">
-        <f:param name="id" value="#{cur.id}"></f:param>
-      </h:link>
-    </h:column>
+        #{cur.deviation}
+        <f:facet name="footer">#{orderStatsList.averageDeviation}</f:facet>
+      </h:column>
     </h:dataTable>
   </ui:define>
 </ui:composition>
