@@ -1,15 +1,15 @@
-package de.java.ejb.drug.info;
+package de.java.web.info.drug;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-interface RemoteDrugInfoService {
+public interface DrugInfoResource {
 
   @GET
   @Path("/drug/{pzn}")
   @Produces("application/json")
-  public DrugInfo getInfo(@PathParam("pzn") int pzn);
+  DrugInfo getInfo(@PathParam("pzn") int pzn);
 
 }

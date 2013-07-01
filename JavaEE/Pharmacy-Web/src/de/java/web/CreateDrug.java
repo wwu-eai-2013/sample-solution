@@ -6,8 +6,8 @@ import javax.faces.bean.ManagedBean;
 
 import de.java.domain.Drug;
 import de.java.ejb.DrugService;
-import de.java.ejb.drug.info.DrugInfo;
 import de.java.ejb.drug.info.DrugInfoService;
+import de.java.web.info.drug.DrugInfo;
 import de.java.web.util.Util;
 
 @ManagedBean

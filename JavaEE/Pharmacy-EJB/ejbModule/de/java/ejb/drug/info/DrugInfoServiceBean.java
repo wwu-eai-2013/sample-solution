@@ -10,17 +10,20 @@ import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
+import de.java.web.info.drug.DrugInfo;
+import de.java.web.info.drug.DrugInfoResource;
+
 @Stateless
 public class DrugInfoServiceBean implements DrugInfoService {
 
   static final String PZN_SERVICE_HOST = "http://wi-eai.uni-muenster.de";
 
-  private RemoteDrugInfoService remote;
+  private DrugInfoResource remote;
 
   @PostConstruct
   public void initialise() {
     RegisterBuiltin.register(ResteasyProviderFactory.getInstance());
-    remote = ProxyFactory.create(RemoteDrugInfoService.class, PZN_SERVICE_HOST);
+    remote = ProxyFactory.create(DrugInfoResource.class, PZN_SERVICE_HOST);
   }
 
   @Override

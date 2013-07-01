@@ -1,4 +1,4 @@
-package de.java.ejb.drug.info;
+package de.java.web.info.drug;
 
 import java.io.Serializable;
 
