@@ -16,20 +16,23 @@ import de.java.web.stats.order.OrderStatsResource;
 @Stateless
 public class OrderStatsServiceBean implements OrderStatsService {
 
-  static final String JAVA_SERVICE_HOST = "http://localhost:8080/Pharmacy-Web/api/";
-
-  private OrderStatsResource remote;
+  private OrderStatsResource javaOrderStats;
+  private OrderStatsResource csharpeOrderStats;
 
   @PostConstruct
   public void initialise() {
     RegisterBuiltin.register(ResteasyProviderFactory.getInstance());
-    remote = ProxyFactory.create(OrderStatsResource.class, JAVA_SERVICE_HOST);
+    javaOrderStats = ProxyFactory.create(OrderStatsResource.class, Subsidiaries.JAVA_HOST);
+    csharpeOrderStats = ProxyFactory.create(OrderStatsResource.class, Subsidiaries.CSHARPE_HOST);
   }
 
   public List<WrappedOrderStatistic> getStats() {
     ArrayList<WrappedOrderStatistic> result = new ArrayList<WrappedOrderStatistic>();
-    for (OrderStatistic stat : remote.getAllStatistics()) {
-      result.add(new WrappedOrderStatistic("JaVa", stat));
+    for (OrderStatistic statAtJava : javaOrderStats.getAllStatistics()) {
+      result.add(new WrappedOrderStatistic("JaVa", statAtJava));
+    }
+    for (OrderStatistic statAtCsharpe : csharpeOrderStats.getAllStatistics()) {
+      result.add(new WrappedOrderStatistic("C.Sharpe", statAtCsharpe));
     }
     return result;
   }
