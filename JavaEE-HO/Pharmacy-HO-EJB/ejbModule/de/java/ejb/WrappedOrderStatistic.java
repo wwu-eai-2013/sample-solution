@@ -5,6 +5,8 @@ import java.io.Serializable;
 import de.java.web.stats.order.OrderStatistic;
 
 public class WrappedOrderStatistic implements Serializable {
+  
+  private static final long serialVersionUID = 3496548403729297148L;
 
   private String subsidiary;
   private OrderStatistic statistic;
@@ -25,7 +27,5 @@ public class WrappedOrderStatistic implements Serializable {
   public long getDeviation() {
     return statistic.getDeviation();
   }
-
-  private static final long serialVersionUID = 3496548403729297148L;
 
 }
