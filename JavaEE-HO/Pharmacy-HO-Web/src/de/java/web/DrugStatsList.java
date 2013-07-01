@@ -20,7 +20,7 @@ public class DrugStatsList {
     if (stats == null) {
       stats = service.getStats();
     }
-    return service.getStats();
+    return stats;
   }
 
 }

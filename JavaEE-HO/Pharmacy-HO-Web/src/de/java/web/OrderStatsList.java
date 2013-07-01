@@ -19,7 +19,7 @@ public class OrderStatsList {
     if (stats == null) {
       stats = service.getStats();
     }
-    return service.getStats();
+    return stats;
   }
 
   public double getAverageDeviation() {
