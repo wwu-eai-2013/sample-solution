@@ -9,6 +9,6 @@ public interface OrderStatsService {
 
   List<WrappedOrderStatistic> getStats();
 
-  double calculateAverageDeviation(List<WrappedOrderStatistic> stats);
+  Deviation calculateAverageDeviation(List<WrappedOrderStatistic> stats);
 
 }

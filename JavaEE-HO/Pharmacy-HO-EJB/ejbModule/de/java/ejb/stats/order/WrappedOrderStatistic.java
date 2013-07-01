@@ -24,8 +24,8 @@ public class WrappedOrderStatistic implements Serializable {
     return statistic.getOrderId();
   }
 
-  public long getDeviation() {
-    return statistic.getDeviation();
+  public Deviation getDeviation() {
+    return new Deviation(statistic.getDeviation());
   }
 
 }

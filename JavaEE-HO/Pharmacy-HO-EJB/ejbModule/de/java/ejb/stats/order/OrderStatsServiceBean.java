@@ -40,12 +40,15 @@ public class OrderStatsServiceBean implements OrderStatsService {
   }
 
   @Override
-  public double calculateAverageDeviation(List<WrappedOrderStatistic> stats) {
+  public Deviation calculateAverageDeviation(List<WrappedOrderStatistic> stats) {
+    if (stats.isEmpty())
+      return new Deviation(0);
+
     long sum = 0;
     for (WrappedOrderStatistic stat : stats) {
-      sum += Math.abs(stat.getDeviation());
+      sum += Math.abs(stat.getDeviation().getTotalSeconds());
     }
-    return sum / stats.size();
+    return new Deviation(sum / stats.size());
   }
 
 }

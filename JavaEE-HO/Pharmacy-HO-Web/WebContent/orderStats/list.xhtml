@@ -10,7 +10,7 @@
     <h3>Replenishment Order statistics</h3>
     <h:dataTable value="#{orderStatsList.stats}" var="cur"
       styleClass="data-table" headerClass="data-cell header-cell"
-      columnClasses="data-cell,data-cell,data-cell"
+      columnClasses="data-cell,data-cell,data-cell,data-cell"
       footerClass="data-cell footer-cell"
       rendered="#{not empty orderStatsList.stats}">
       <h:column>
@@ -25,6 +25,11 @@
         <f:facet name="header">Deviation</f:facet>
         #{cur.deviation}
         <f:facet name="footer">#{orderStatsList.averageDeviation}</f:facet>
+      </h:column>
+      <h:column>
+        <f:facet name="header">in total/sec</f:facet>
+        #{cur.deviation.totalSeconds}
+        <f:facet name="footer">#{orderStatsList.averageDeviation.totalSeconds}</f:facet>
       </h:column>
     </h:dataTable>
   </ui:define>
