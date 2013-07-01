@@ -1,4 +1,4 @@
-package de.java.web.api;
+package de.java.web.stats.order;
 
 import java.io.Serializable;
 
@@ -25,6 +25,10 @@ public class OrderStatistic implements Serializable {
   public OrderStatistic(long orderId, long deviation) {
     this.orderId = orderId;
     this.deviation = deviation;
+  }
+
+  OrderStatistic() {
+    // for deserialization from JSON
   }
 
   public long getOrderId() {

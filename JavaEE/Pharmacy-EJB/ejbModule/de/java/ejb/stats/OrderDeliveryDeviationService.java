@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import javax.ejb.Remote;
 
-import de.java.web.api.OrderStatistic;
+import de.java.web.stats.order.OrderStatistic;
 
 @Remote
 public interface OrderDeliveryDeviationService {

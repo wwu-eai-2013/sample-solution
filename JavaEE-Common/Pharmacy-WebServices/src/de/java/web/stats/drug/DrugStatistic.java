@@ -1,4 +1,4 @@
-package de.java.web.api;
+package de.java.web.stats.drug;
 
 import java.io.Serializable;
 

@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
 
 import de.java.domain.Drug;
 import de.java.ejb.DrugService;
-import de.java.web.api.DrugStatistic;
+import de.java.web.stats.drug.DrugStatistic;
 
 @Stateless
 public class AverageInventoryStatisticsServiceBean implements

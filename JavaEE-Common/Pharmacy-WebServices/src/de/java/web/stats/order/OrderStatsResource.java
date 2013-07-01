@@ -1,4 +1,4 @@
-package de.java.web.api;
+package de.java.web.stats.order;
 
 import java.util.Collection;
 
@@ -8,16 +8,16 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("drugstats")
-public interface DrugStatsResource {
+@Path("orderstats")
+public interface OrderStatsResource {
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  Collection<DrugStatistic> getAllStatistics();
+  Collection<OrderStatistic> getAllStatistics();
 
   @GET
-  @Path("{pzn}")
+  @Path("{orderId}")
   @Produces(MediaType.APPLICATION_JSON)
-  DrugStatistic getStatistic(@PathParam("pzn") int pzn);
+  OrderStatistic getStatistic(@PathParam("orderId") long orderId);
 
 }

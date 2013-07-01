@@ -7,7 +7,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import de.java.web.api.OrderStatistic;
+import de.java.web.stats.order.OrderStatistic;
 
 @Stateless
 public class OrderDeliveryDeviationServiceBean implements
@@ -20,7 +20,7 @@ public class OrderDeliveryDeviationServiceBean implements
     List<OrderStatistic> resultList = em
         .createQuery(
             // subtracting two dates automatically yields the difference in seconds
-            "select new de.java.web.api.OrderStatistic(o.id, o.actualDelivery - o.expectedDelivery)\n"
+            "select new de.java.web.stats.order.OrderStatistic(o.id, o.actualDelivery - o.expectedDelivery)\n"
                 + "from ReplenishmentOrder o\n"
                 + "where o.state = de.java.domain.OrderState.FINISHED", OrderStatistic.class)
         .getResultList();
@@ -31,7 +31,7 @@ public class OrderDeliveryDeviationServiceBean implements
     return em
         .createQuery(
             // subtracting two dates automatically yields the difference in seconds
-            "select new de.java.web.api.OrderStatistic(o.id, o.actualDelivery - o.expectedDelivery)\n"
+            "select new de.java.web.stats.order.OrderStatistic(o.id, o.actualDelivery - o.expectedDelivery)\n"
                 + "from ReplenishmentOrder o\n"
                 + "where o.state = de.java.domain.OrderState.FINISHED\n"
                 + "  and o.id = :orderId", OrderStatistic.class)

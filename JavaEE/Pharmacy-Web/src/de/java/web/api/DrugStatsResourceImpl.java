@@ -5,12 +5,16 @@ import java.util.Collection;
 import java.util.Date;
 
 import javax.ejb.EJB;
+import javax.ws.rs.Path;
 
 import org.jboss.resteasy.spi.NotFoundException;
 
 import de.java.ejb.DrugService;
 import de.java.ejb.stats.AverageInventoryStatisticsService;
+import de.java.web.stats.drug.DrugStatistic;
+import de.java.web.stats.drug.DrugStatsResource;
 
+@Path("drugstats")
 public class DrugStatsResourceImpl implements DrugStatsResource {
 
   @EJB

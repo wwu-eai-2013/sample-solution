@@ -3,6 +3,7 @@ package de.java.web.api;
 import java.util.Collection;
 
 import javax.ejb.EJB;
+import javax.ws.rs.Path;
 
 import org.jboss.resteasy.spi.NotFoundException;
 
@@ -10,7 +11,10 @@ import de.java.domain.OrderState;
 import de.java.domain.ReplenishmentOrder;
 import de.java.ejb.ReplenishmentOrderService;
 import de.java.ejb.stats.OrderDeliveryDeviationService;
+import de.java.web.stats.order.OrderStatistic;
+import de.java.web.stats.order.OrderStatsResource;
 
+@Path("orderstats")
 public class OrderStatsResourceImpl implements OrderStatsResource {
 
   @EJB

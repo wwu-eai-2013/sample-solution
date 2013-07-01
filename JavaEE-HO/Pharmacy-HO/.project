@@ -6,6 +6,7 @@
 		<project>Pharmacy-HO-Persistence</project>
 		<project>Pharmacy-HO-EJB</project>
 		<project>Pharmacy-HO-Web</project>
+		<project>Pharmacy-WebServices</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

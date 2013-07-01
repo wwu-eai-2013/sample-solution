@@ -5,7 +5,7 @@ import java.util.Date;
 
 import javax.ejb.Remote;
 
-import de.java.web.api.DrugStatistic;
+import de.java.web.stats.drug.DrugStatistic;
 
 @Remote
 public interface AverageInventoryStatisticsService {
