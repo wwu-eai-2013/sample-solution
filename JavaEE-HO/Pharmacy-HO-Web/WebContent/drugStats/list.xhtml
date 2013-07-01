@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="/resources/master.xhtml">
+  <ui:define name="title">Drug statistics</ui:define>
+  <ui:define name="content">
+    <h:dataTable value="#{drugStatsList.stats}" var="cur"
+      styleClass="data-table" headerClass="data-cell header-cell"
+      columnClasses="data-cell,data-cell,data-cell"
+      rendered="#{not empty drugStatsList.stats}">
+      <h:column>
+        <f:facet name="header">PZN</f:facet>
+        #{cur.pzn}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Avg. inv.</f:facet>
+        #{cur.averageInventoryLevel}
+      </h:column>
+      <h:column>
+        <h:link outcome="/drugStats/details.xhtml" value="Details">
+          <f:param name="pzn" value="#{cur.pzn}"></f:param>
+        </h:link>
+      </h:column>
+    </h:dataTable>
+  </ui:define>
+</ui:composition>
+</html>

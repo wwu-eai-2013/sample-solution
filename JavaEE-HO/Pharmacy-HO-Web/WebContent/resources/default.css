@@ -1,0 +1,116 @@
+h1, h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+h3, h4 {
+  margin-top: 1em;
+  margin-bottom: 0;
+}
+
+a {
+  text-decoration: none;
+  color: #0000DD;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+textarea {
+  font-family: serif;
+}
+
+body {
+  background-color: #F0F0F0;
+  margin: 10px auto;
+  width: 800px; 
+}
+
+#header {
+  padding-left: 1em;
+  padding-top: 0.5em;
+  background-color: #cadaff;
+  border: 2px solid white;
+}
+
+#title {
+  vertical-align: 20px;
+}
+
+#navigation {
+  min-height: 2em;
+  border-left: 2px solid white;
+  border-right: 2px solid white;
+}
+
+#navigation ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0.5em;
+}
+
+#navigation li {
+  float: left;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+#content {
+  background-color: white;
+  clear: both;
+  min-height: 400px;
+  padding: 1em;
+}
+
+#footer {
+  clear: both;
+  border-top: 1px solid #CCCCCC;
+  font-size: small;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}
+
+.success {
+  color: green;
+  font-weight: bold;
+}
+
+.form-footer {
+  padding-left: 5em;
+}
+
+.data-table {
+  border-collapse: collapse;
+}
+
+.header-cell {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+
+.data-cell {
+  border-left: 1px solid black;
+  padding-right: 4px;
+  padding-left: 4px;
+}
+
+.cell-left {
+  text-align: right;
+}
+
+.data-cell:first-child {
+  border-left: none;
+}
+
+.label {
+  font-weight: bold;
+  padding-right: 1em;
+}
+
+.details-table .label {
+  border-bottom: 1px solid black;
+}
