@@ -1,4 +1,4 @@
-package de.java.ejb;
+package de.java.ejb.stats.drug;
 
 import java.io.Serializable;
 import java.util.Collection;

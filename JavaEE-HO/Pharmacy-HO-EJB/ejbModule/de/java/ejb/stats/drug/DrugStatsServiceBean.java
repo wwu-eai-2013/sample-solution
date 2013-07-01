@@ -1,4 +1,4 @@
-package de.java.ejb;
+package de.java.ejb.stats.drug;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,6 +16,7 @@ import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
+import de.java.ejb.Subsidiaries;
 import de.java.web.stats.drug.DrugStatistic;
 import de.java.web.stats.drug.DrugStatsResource;
 

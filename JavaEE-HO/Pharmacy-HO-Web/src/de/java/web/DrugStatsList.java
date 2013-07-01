@@ -5,8 +5,8 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 
-import de.java.ejb.DrugStatsService;
-import de.java.ejb.AggregatedDrugStatistic;;
+import de.java.ejb.stats.drug.AggregatedDrugStatistic;
+import de.java.ejb.stats.drug.DrugStatsService;
 
 @ManagedBean
 public class DrugStatsList {
