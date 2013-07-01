@@ -23,4 +23,11 @@ public class DrugStatsList {
     return stats;
   }
 
+  public double getSumOfAverages() {
+    double sum = 0;
+    for (AggregatedDrugStatistic statistic : getStats()) {
+      sum += statistic.getAverageInventoryLevel();
+    }
+    return sum;
+  }
 }
