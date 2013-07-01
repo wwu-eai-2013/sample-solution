@@ -5,8 +5,8 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 
-import de.java.ejb.OrderStatsService;
-import de.java.ejb.WrappedOrderStatistic;
+import de.java.ejb.stats.order.OrderStatsService;
+import de.java.ejb.stats.order.WrappedOrderStatistic;
 
 @ManagedBean
 public class OrderStatsList {

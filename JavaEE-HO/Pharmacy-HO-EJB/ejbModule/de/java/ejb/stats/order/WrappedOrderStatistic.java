@@ -1,4 +1,4 @@
-package de.java.ejb;
+package de.java.ejb.stats.order;
 
 import java.io.Serializable;
 
