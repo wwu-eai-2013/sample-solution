@@ -3,15 +3,13 @@ package de.java.ejb.stats.drug;
 import java.io.Serializable;
 import java.util.Collection;
 
-import de.java.web.stats.drug.DrugStatistic;
-
 public class AggregatedDrugStatistic implements Serializable {
 
   private static final long serialVersionUID = 3496548403729297148L;
 
-  private Collection<DrugStatistic> statistics;
+  private Collection<WrappedDrugStatistic> statistics;
 
-  public AggregatedDrugStatistic(Collection<DrugStatistic> statistics) {
+  public AggregatedDrugStatistic(Collection<WrappedDrugStatistic> statistics) {
     this.statistics = statistics;
   }
 
@@ -20,9 +18,13 @@ public class AggregatedDrugStatistic implements Serializable {
     return statistics.iterator().next().getPzn();
   }
 
+  public Collection<WrappedDrugStatistic> getIndividualStatistics() {
+    return statistics;
+  }
+
   public double getAverageInventoryLevel() {
     double sum = 0;
-    for (DrugStatistic statistic : statistics) {
+    for (WrappedDrugStatistic statistic : statistics) {
       sum += statistic.getAverageInventoryLevel();
     }
     return sum;

@@ -1,5 +1,7 @@
 package de.java.ejb.stats.drug;
 
+import static de.java.ejb.Subsidiaries.*;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -10,13 +12,14 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 
+import org.jboss.resteasy.client.ClientResponseFailure;
 import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
-import de.java.ejb.Subsidiaries;
 import de.java.web.stats.drug.DrugStatistic;
 import de.java.web.stats.drug.DrugStatsResource;
 
@@ -29,13 +32,13 @@ public class DrugStatsServiceBean implements DrugStatsService {
   @PostConstruct
   public void initialise() {
     RegisterBuiltin.register(ResteasyProviderFactory.getInstance());
-    javaDrugStats = ProxyFactory.create(DrugStatsResource.class, Subsidiaries.JAVA_HOST);
-    csharpeDrugStats = ProxyFactory.create(DrugStatsResource.class, Subsidiaries.CSHARPE_HOST);
+    javaDrugStats = ProxyFactory.create(DrugStatsResource.class, JAVA_HOST);
+    csharpeDrugStats = ProxyFactory.create(DrugStatsResource.class, CSHARPE_HOST);
   }
 
   public List<AggregatedDrugStatistic> getStats() {
-    Map<Integer, DrugStatistic> statisticsFromJava = mapPznToStatistics(javaDrugStats.getAllStatistics());
-    Map<Integer, DrugStatistic> statisticsFromCsharpe = mapPznToStatistics(csharpeDrugStats.getAllStatistics());
+    Map<Integer, WrappedDrugStatistic> statisticsFromJava = mapPznToStatistics(JAVA_DISPLAY_NAME, javaDrugStats.getAllStatistics());
+    Map<Integer, WrappedDrugStatistic> statisticsFromCsharpe = mapPznToStatistics(CSHARPE_DISPLAY_NAME, csharpeDrugStats.getAllStatistics());
 
     @SuppressWarnings("unchecked")
     List<Integer> uniquePzns = new ArrayList<>(generateDistinctSetOf(statisticsFromJava, statisticsFromCsharpe));
@@ -43,7 +46,7 @@ public class DrugStatsServiceBean implements DrugStatsService {
 
     ArrayList<AggregatedDrugStatistic> result = new ArrayList<>();
     for (Integer pzn : uniquePzns) {
-      Collection<DrugStatistic> statisticsForPzn = new ArrayList<>();
+      Collection<WrappedDrugStatistic> statisticsForPzn = new ArrayList<>();
 
       if (statisticsFromJava.containsKey(pzn)) {
         statisticsForPzn.add(statisticsFromJava.get(pzn));
@@ -57,11 +60,11 @@ public class DrugStatsServiceBean implements DrugStatsService {
     return result;
   }
 
-  private Map<Integer, DrugStatistic> mapPznToStatistics(
-      Collection<DrugStatistic> allStatistics) {
-    Map<Integer, DrugStatistic> mapped = new HashMap<>();
+  private Map<Integer, WrappedDrugStatistic> mapPznToStatistics(
+      String fromSubsidiary, Collection<DrugStatistic> allStatistics) {
+    Map<Integer, WrappedDrugStatistic> mapped = new HashMap<>();
     for (DrugStatistic statistic : allStatistics) {
-      mapped.put(statistic.getPzn(), statistic);
+      mapped.put(statistic.getPzn(), new WrappedDrugStatistic(fromSubsidiary, statistic));
     }
     return mapped;
   }
@@ -77,7 +80,26 @@ public class DrugStatsServiceBean implements DrugStatsService {
 
   @Override
   public AggregatedDrugStatistic getStatistic(int pzn) {
-    return null;
+    Collection<WrappedDrugStatistic> statistics = new ArrayList<>();
+
+    try {
+      statistics.add(new WrappedDrugStatistic(JAVA_DISPLAY_NAME, javaDrugStats.getStatistic(pzn)));
+    } catch (ClientResponseFailure e) { }
+
+    try {
+      statistics.add(new WrappedDrugStatistic(CSHARPE_DISPLAY_NAME, csharpeDrugStats.getStatistic(pzn)));
+    } catch (ClientResponseFailure e) { }
+
+    validateThatStatisticsAreAvailableFor(pzn, statistics);
+    
+    return new AggregatedDrugStatistic(statistics);
+  }
+
+  private void validateThatStatisticsAreAvailableFor(int pzn,
+      Collection<WrappedDrugStatistic> statistics) {
+    if (statistics.isEmpty()) {
+      throw new EJBException(String.format("Drug with pzn %s not available at any subsidiary", pzn));
+    }
   }
 
 }

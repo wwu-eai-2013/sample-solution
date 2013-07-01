@@ -1,5 +1,7 @@
 package de.java.ejb.stats.order;
 
+import static de.java.ejb.Subsidiaries.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +12,6 @@ import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 
-import de.java.ejb.Subsidiaries;
 import de.java.web.stats.order.OrderStatistic;
 import de.java.web.stats.order.OrderStatsResource;
 
@@ -23,17 +24,17 @@ public class OrderStatsServiceBean implements OrderStatsService {
   @PostConstruct
   public void initialise() {
     RegisterBuiltin.register(ResteasyProviderFactory.getInstance());
-    javaOrderStats = ProxyFactory.create(OrderStatsResource.class, Subsidiaries.JAVA_HOST);
-    csharpeOrderStats = ProxyFactory.create(OrderStatsResource.class, Subsidiaries.CSHARPE_HOST);
+    javaOrderStats = ProxyFactory.create(OrderStatsResource.class, JAVA_HOST);
+    csharpeOrderStats = ProxyFactory.create(OrderStatsResource.class, CSHARPE_HOST);
   }
 
   public List<WrappedOrderStatistic> getStats() {
     ArrayList<WrappedOrderStatistic> result = new ArrayList<>();
     for (OrderStatistic statAtJava : javaOrderStats.getAllStatistics()) {
-      result.add(new WrappedOrderStatistic("JaVa", statAtJava));
+      result.add(new WrappedOrderStatistic(JAVA_DISPLAY_NAME, statAtJava));
     }
     for (OrderStatistic statAtCsharpe : csharpeOrderStats.getAllStatistics()) {
-      result.add(new WrappedOrderStatistic("C.Sharpe", statAtCsharpe));
+      result.add(new WrappedOrderStatistic(CSHARPE_DISPLAY_NAME, statAtCsharpe));
     }
     return result;
   }
