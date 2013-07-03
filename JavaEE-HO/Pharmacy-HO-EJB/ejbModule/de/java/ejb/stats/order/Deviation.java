@@ -22,12 +22,20 @@ public class Deviation implements Serializable {
     return deviation;
   }
   
-  private long days() {
+  long days() {
     return deviation / (24*60*60);
   }
   
-  private long hours() {
-    return deviation / (60*60) - days() * 24;
+  long hours() {
+    return deviation / (60*60) - (days() * 24);
+  }
+
+  long minutes() {
+    return deviation / 60 - (hours() * 60) - (days() * 24 * 60);
+  }
+
+  long seconds() {
+    return deviation % 60;
   }
 
   @Override
@@ -55,7 +63,7 @@ public class Deviation implements Serializable {
   }
 
   private String minuteString() {
-    long minutes = deviation / (60) - hours() * 60;
+    long minutes = minutes();
     if (minutes == 1)
       return minutes + " minute, ";
     // also show minutes when hours or days are present
@@ -65,7 +73,7 @@ public class Deviation implements Serializable {
   }
 
   private String secondString() {
-    long seconds = deviation % 60;
+    long seconds = seconds();
     if (seconds == 1)
       return seconds + " second";
     // always show seconds
