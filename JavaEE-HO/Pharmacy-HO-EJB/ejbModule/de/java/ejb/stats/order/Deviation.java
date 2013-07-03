@@ -27,11 +27,14 @@ public class Deviation implements Serializable {
   }
   
   long hours() {
-    return deviation / (60*60) - (days() * 24);
+    long daysInHours = days() * 24;
+    return deviation / (60*60) - daysInHours;
   }
 
   long minutes() {
-    return deviation / 60 - (hours() * 60) - (days() * 24 * 60);
+    long hoursInMinutes = hours() * 60;
+    long daysInMinutes = days() * 24 * 60;
+    return deviation / 60 - hoursInMinutes - daysInMinutes;
   }
 
   long seconds() {
