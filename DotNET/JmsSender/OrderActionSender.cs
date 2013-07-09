@@ -46,7 +46,9 @@ namespace JmsSender
 
         public static void Add(int pzn, int quantity, int orderId)
         {
-            Console.WriteLine("add");
+            string message = String.Format("ADD;{0};{1};{2}", orderId, pzn, quantity);
+
+            SendMessage(message);
         }
     }
 }
