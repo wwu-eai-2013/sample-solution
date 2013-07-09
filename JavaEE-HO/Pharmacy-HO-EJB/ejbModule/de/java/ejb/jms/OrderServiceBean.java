@@ -22,13 +22,7 @@ public class OrderServiceBean extends AbstractJmsBean {
 
   @PostConstruct
   public void start() {
-    while (true) {
-      try {
-        sendMessage();
-        Thread.sleep(50000);
-      } catch (InterruptedException e) {
-      }
-    }
+    sendMessage();
   }
 
   private void sendMessage() {
