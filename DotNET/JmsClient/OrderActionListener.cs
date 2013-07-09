@@ -11,7 +11,7 @@ namespace JmsClient
     {
         internal static void OnOrderAction(IMessage message)
         {
-            throw new NotImplementedException();
+            Console.WriteLine(((ITextMessage)message).Text);
         }
     }
 }
