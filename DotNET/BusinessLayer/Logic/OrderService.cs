@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Pharmacy.BusinessLayer.Data;
+using JmsSender;
 
 namespace Pharmacy.BusinessLayer.Logic
 {
@@ -180,7 +181,12 @@ namespace Pharmacy.BusinessLayer.Logic
                     Order = newOrder,
                     Quantity = quantity
                 });
-                db.ReplenishmentOrderSet.Add(newOrder);
+                newOrder = db.ReplenishmentOrderSet.Add(newOrder);
+                db.SaveChanges();
+
+                int orderId = newOrder.Id;
+                OrderActionSender.Open(orderId);
+                OrderActionSender.Add(drug.PZN, quantity, orderId);
             }
         }
 
