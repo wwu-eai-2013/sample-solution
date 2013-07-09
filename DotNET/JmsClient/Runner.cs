@@ -23,7 +23,7 @@ namespace JmsClient
             IConnectionFactory factory = new NMSConnectionFactory(connectUri);
 
             using (IConnection connection = factory.CreateConnection())
-            using (session = connection.CreateSession())
+            using (session = connection.CreateSession(AcknowledgementMode.AutoAcknowledge))
             {
                 // durable consumers require a clientId
                 connection.ClientId = "CSharpe";
