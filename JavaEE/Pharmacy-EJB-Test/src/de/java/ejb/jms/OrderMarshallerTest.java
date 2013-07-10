@@ -10,7 +10,9 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import de.java.domain.Drug;
 import de.java.domain.OrderState;
+import de.java.domain.Position;
 import de.java.domain.ReplenishmentOrder;
 
 public class OrderMarshallerTest {
@@ -37,6 +39,22 @@ public class OrderMarshallerTest {
       fail("Provided date could not be parsed: " + date + " should adhere to " + pattern);
       return null;
     }
+  }
+
+  @Test public void
+  shouldMarshalSingleOrderWithPositions() {
+    Position position = new Position();
+    position.setReplenishedDrug(new Drug(56, ""));
+    position.setQuantity(42);
+
+    ReplenishmentOrder finishedOrder = new ReplenishmentOrder();
+    finishedOrder.setId(42);
+    finishedOrder.setState(OrderState.FINISHED);
+    finishedOrder.setExpectedDelivery(on("2014-05-03 09:23"));
+    finishedOrder.setActualDelivery(on("2013-04-01 12:45"));
+    finishedOrder.getPositions().add(position);
+    String orders = OrderMarshaller.marshalSingle(finishedOrder);
+    assertThat(orders, is("42;FINISHED;1;56;42;2014-05-03 09:23;2013-04-01 12:45"));
   }
 
 }
