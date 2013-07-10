@@ -5,8 +5,10 @@ import static org.junit.Assert.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import de.java.ejb.jms.domain.OrderState;
@@ -63,5 +65,17 @@ public class MessageUnmarshallerTest {
     ReplenishmentOrder order = convertSingle(input);
     assertThat(order.getExpectedDelivery(), is(on("2013-05-21 15:35")));
     assertThat(order.getActualDelivery(), is(on("2014-06-12 18:22")));
+  }
+
+  @Test public void
+  shouldUnmarshalMultipleOrders() {
+    String input = "5;FINISHED;1;1715965;15;2013-05-21 15:35;2014-06-12 18:22"
+        + "\n4;OPEN;1;1715965;42";
+    Collection<ReplenishmentOrder> orders = convertAll(input);
+    assertThat(orders.size(), is(2));
+  }
+
+  private Collection<ReplenishmentOrder> convertAll(String input) {
+    return MessageUnmarshaller.unmarshalAll(input, DUMMY_SUBSIDIARY);
   }
 }

@@ -10,4 +10,17 @@ public class Position {
     this.quantity = quantity;
   }
 
+  @Override
+  public String toString() {
+    return String.format("pzn: %d, quantity: %d", pzn, quantity);
+  }
+
+  public int getPzn() {
+    return pzn;
+  }
+
+  public long getQuantity() {
+    return quantity;
+  }
+
 }
