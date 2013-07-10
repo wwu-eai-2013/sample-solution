@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import de.java.ejb.jms.domain.OrderState;
