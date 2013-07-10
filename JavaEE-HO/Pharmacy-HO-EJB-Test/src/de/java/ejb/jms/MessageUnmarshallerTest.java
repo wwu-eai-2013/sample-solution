@@ -68,8 +68,8 @@ public class MessageUnmarshallerTest {
 
   @Test public void
   shouldUnmarshalMultipleOrders() {
-    String input = "5;FINISHED;1;1715965;15;2013-05-21 15:35;2014-06-12 18:22"
-        + "\n4;OPEN;1;1715965;42";
+    String input = "5;FINISHED;2013-05-21 15:35;2014-06-12 18:22"
+        + "\n4;OPEN;1";
     Collection<ReplenishmentOrder> orders = convertAll(input);
     assertThat(orders.size(), is(2));
   }

@@ -88,7 +88,7 @@ public class OrderActionMDB implements MessageListener {
   }
 
   private String marshalAll(Collection<ReplenishmentOrder> orders) {
-    return "5;ORDERED;2;451122;23;1715965;15;2013-05-21 15:35";
+    return "5;ORDERED;2013-04-01 12:00\n6;OPEN";
   }
 
 }
