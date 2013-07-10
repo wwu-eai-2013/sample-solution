@@ -3,6 +3,10 @@ package de.java.ejb.jms;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.junit.Test;
 
 import de.java.ejb.jms.domain.OrderState;
@@ -24,7 +28,40 @@ public class ConversionTest {
   }
 
   private ReplenishmentOrder convertSingle(String input) {
-    return MessageConverter.convertSingle(input, DUMMY_SUBSIDIARY);
+    return MessageUnmarshaler.unmarshalSingle(input, DUMMY_SUBSIDIARY);
   }
 
+  @Test public void
+  shouldConvertPostingOrderWithSinglePosition() {
+    String input = "5;POSTING;1;451122;23";
+    ReplenishmentOrder order = convertSingle(input);
+    assertThat(order.getState(), is(OrderState.POSTING));
+  }
+
+  @Test public void
+  shouldConvertOrderedOrderWithTwoPositions() {
+    String input = "5;ORDERED;2;451122;23;1715965;15;2013-05-21 15:35";
+    ReplenishmentOrder order = convertSingle(input);
+    assertThat(order.getPositions().size(), is(2));
+    assertThat(order.getExpectedDelivery(), is(on("2013-05-21 15:35")));
+  }
+
+  private Date on(String date) {
+    String pattern = "yyyy-MM-dd HH:mm";
+    SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+    try {
+      return formatter.parse(date);
+    } catch (ParseException e) {
+      fail("Provided date could not be parsed: " + date + " should adhere to " + pattern);
+      return null;
+    }
+  }
+
+  @Test public void
+  shouldConvertFinishedOrderWithTwoPositions() {
+    String input = "5;FINISHED;1;1715965;15;2013-05-21 15:35;2014-06-12 18:22";
+    ReplenishmentOrder order = convertSingle(input);
+    assertThat(order.getExpectedDelivery(), is(on("2013-05-21 15:35")));
+    assertThat(order.getActualDelivery(), is(on("2014-06-12 18:22")));
+  }
 }
