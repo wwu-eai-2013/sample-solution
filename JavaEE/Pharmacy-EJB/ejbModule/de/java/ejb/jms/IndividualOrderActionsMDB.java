@@ -28,9 +28,10 @@ import de.java.ejb.ReplenishmentOrderService;
 })
 public class IndividualOrderActionsMDB extends AbstractJmsBean implements MessageListener {
 
+  private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
   @EJB
   ReplenishmentOrderService orderService;
-  private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
   public void onMessage(Message incomingMessage) {
     try {
@@ -109,7 +110,7 @@ public class IndividualOrderActionsMDB extends AbstractJmsBean implements Messag
     }
   }
 
-  Date parseDate(String from) {
+  private Date parseDate(String from) {
     try {
       return formatter.parse(from);
     } catch (ParseException e) {
