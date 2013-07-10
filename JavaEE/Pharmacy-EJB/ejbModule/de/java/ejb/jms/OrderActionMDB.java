@@ -1,6 +1,6 @@
 package de.java.ejb.jms;
 
-import java.util.Collection;
+import static de.java.ejb.jms.OrderMarshaller.marshalAll;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -19,7 +19,6 @@ import javax.jms.TextMessage;
 
 import org.jboss.logging.Logger;
 
-import de.java.domain.ReplenishmentOrder;
 import de.java.ejb.ReplenishmentOrderService;
 
 @MessageDriven(activationConfig = {
@@ -85,10 +84,6 @@ public class OrderActionMDB implements MessageListener {
     } catch (JMSException e) {
       log.error("Error while processing message", e);
     }
-  }
-
-  private String marshalAll(Collection<ReplenishmentOrder> orders) {
-    return "5;ORDERED;2013-04-01 12:00\n6;OPEN";
   }
 
 }
