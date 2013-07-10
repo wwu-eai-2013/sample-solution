@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="/resources/master.xhtml">
+  <ui:define name="metadata">
+    <f:metadata>
+      <f:viewParam name="subsidiary" value="#{replenishmentOrderPage.subsidiary}"></f:viewParam>
+      <f:viewParam name="id" value="#{replenishmentOrderPage.orderId}"></f:viewParam>
+      <f:event listener="#{replenishmentOrderPage.ensureInitialized}" type="preRenderView"></f:event>
+    </f:metadata>
+  </ui:define>
+  <ui:define name="title">Replenishment Order Details</ui:define>
+  <ui:define name="content">
+    <div class="details">
+      <h2>Replenishment Order #{replenishmentOrderPage.orderId} from #{replenishmentOrderPage.order.subsidiary}</h2>
+      <h:form>
+        <h:panelGrid columns="2" columnClasses="label, value form-input"
+          footerClass="form-footer" styleClass="details-table">
+          State
+          <h:outputText value="#{replenishmentOrderPage.order.state}" />
+          <h:panelGroup rendered="#{replenishmentOrderPage.order.state == 'POSTING' or replenishmentOrderPage.order.state == 'ORDERED' or replenishmentOrderPage.order.state == 'FINISHED'}">
+            Expected delivery date
+          </h:panelGroup>
+          <h:panelGroup rendered="#{replenishmentOrderPage.order.state == 'POSTING' or replenishmentOrderPage.order.state == 'ORDERED' or replenishmentOrderPage.order.state == 'FINISHED'}">
+            <h:inputText id="expectedDelivery" size="16"
+              required="true" requiredMessage="Expected delivery date required"
+              rendered="#{replenishmentOrderPage.order.state == 'POSTING'}"
+              value="#{replenishmentOrderPage.expectedDelivery}">
+              <f:convertDateTime pattern="yyyy-MM-dd HH:mm" timeZone="Europe/Berlin"/>
+            </h:inputText>
+            <h:outputText
+              rendered="#{replenishmentOrderPage.order.state == 'ORDERED' or replenishmentOrderPage.order.state == 'FINISHED'}"
+              value="#{replenishmentOrderPage.order.expectedDelivery}">
+              <f:convertDateTime pattern="yyyy-MM-dd HH:mm" timeZone="Europe/Berlin" />
+            </h:outputText>
+          </h:panelGroup>
+          <h:panelGroup rendered="#{replenishmentOrderPage.order.state == 'FINISHED'}">
+            Actual delivery date
+            <h:outputText
+              value="#{replenishmentOrderPage.order.actualDelivery}">
+              <f:convertDateTime pattern="yyyy-MM-dd HH:mm" timeZone="Europe/Berlin" />
+            </h:outputText>
+          </h:panelGroup>
+          <f:facet name="footer">
+            <h:commandButton
+              rendered="#{replenishmentOrderPage.order.state == 'OPEN' or replenishmentOrderPage.order.state == 'POSTING'}"
+              value="Proceed to #{replenishmentOrderPage.order.state.next}"
+              action="#{replenishmentOrderPage.proceed}" />
+            <h:commandButton
+              rendered="#{replenishmentOrderPage.order.state.cancellable}"
+              value="Cancel"
+              action="#{replenishmentOrderPage.cancel}" />
+          </f:facet>
+        </h:panelGrid>
+        <h:messages for="expectedDelivery" styleClass="error"/>
+        <h:dataTable value="#{replenishmentOrderPage.order.positions}" var="cur"
+          styleClass="data-table" headerClass="data-cell header-cell"
+          columnClasses="data-cell,data-cell"
+          rendered="#{not empty replenishmentOrderPage.order.positions}">
+          <h:column>
+            <f:facet name="header">PZN</f:facet>
+            #{cur.pzn}
+          </h:column>
+          <h:column>
+            <f:facet name="header">Quantity</f:facet>
+            #{cur.quantity}
+          </h:column>
+        </h:dataTable>
+      </h:form>
+    </div>
+    <div class="result">
+      <h:outputText rendered="#{replenishmentOrderPage.error}"
+        styleClass="error"
+        value="#{replenishmentOrderPage.errorMessage}" />
+    </div>
+  </ui:define>
+</ui:composition>
+</html>
