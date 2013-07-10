@@ -20,9 +20,8 @@ import javax.jms.Topic;
 import de.java.ejb.jms.domain.ReplenishmentOrder;
 import de.java.ejb.jms.domain.Subsidiary;
 
-@Singleton
-@Startup
-public class OrderServiceBean extends AbstractJmsBean {
+@Stateless
+public class OrderServiceBean extends AbstractJmsBean implements OrderService {
 
   @Resource(lookup = "java:/topic/OrderActions")
   private Topic orderActions;
@@ -39,6 +38,7 @@ public class OrderServiceBean extends AbstractJmsBean {
     System.out.println("retrieved " + allOrders.size() + " orders");
   }
 
+  @Override
   public Collection<ReplenishmentOrder> getAllOrders() {
     final Collection<ReplenishmentOrder> result = new ArrayList<>();
     try {
