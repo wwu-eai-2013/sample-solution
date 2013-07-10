@@ -13,12 +13,12 @@ import de.java.ejb.jms.domain.OrderState;
 import de.java.ejb.jms.domain.ReplenishmentOrder;
 import de.java.ejb.jms.domain.Subsidiary;
 
-public class ConversionTest {
+public class MessageUnmarshallerTest {
 
   private static final Subsidiary DUMMY_SUBSIDIARY = Subsidiary.JaVa;
 
   @Test public void
-  shouldConvertOpenOrderWithSinglePosition() {
+  shouldUnmarshalOpenOrderWithSinglePosition() {
     String input = "5;OPEN;1;451122;23";
     ReplenishmentOrder order = convertSingle(input);
     assertThat(order.getSubsidiary(), is(DUMMY_SUBSIDIARY));
@@ -28,18 +28,18 @@ public class ConversionTest {
   }
 
   private ReplenishmentOrder convertSingle(String input) {
-    return MessageUnmarshaler.unmarshalSingle(input, DUMMY_SUBSIDIARY);
+    return MessageUnmarshaller.unmarshalSingle(input, DUMMY_SUBSIDIARY);
   }
 
   @Test public void
-  shouldConvertPostingOrderWithSinglePosition() {
+  shouldUnmarshalPostingOrderWithSinglePosition() {
     String input = "5;POSTING;1;451122;23";
     ReplenishmentOrder order = convertSingle(input);
     assertThat(order.getState(), is(OrderState.POSTING));
   }
 
   @Test public void
-  shouldConvertOrderedOrderWithTwoPositions() {
+  shouldUnmarshalOrderedOrderWithTwoPositions() {
     String input = "5;ORDERED;2;451122;23;1715965;15;2013-05-21 15:35";
     ReplenishmentOrder order = convertSingle(input);
     assertThat(order.getPositions().size(), is(2));
@@ -58,7 +58,7 @@ public class ConversionTest {
   }
 
   @Test public void
-  shouldConvertFinishedOrderWithTwoPositions() {
+  shouldUnmarshalFinishedOrderWithTwoPositions() {
     String input = "5;FINISHED;1;1715965;15;2013-05-21 15:35;2014-06-12 18:22";
     ReplenishmentOrder order = convertSingle(input);
     assertThat(order.getExpectedDelivery(), is(on("2013-05-21 15:35")));

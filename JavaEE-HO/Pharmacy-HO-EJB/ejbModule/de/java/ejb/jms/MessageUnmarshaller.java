@@ -10,7 +10,7 @@ import de.java.ejb.jms.domain.OrderState;
 import de.java.ejb.jms.domain.ReplenishmentOrder;
 import de.java.ejb.jms.domain.Subsidiary;
 
-public class MessageUnmarshaler {
+public class MessageUnmarshaller {
   /**
    * @param messageText
    *          Each line within the message text corresponds to a single order
@@ -76,20 +76,20 @@ public class MessageUnmarshaler {
       return order;
     }
 
-    private void addPositions() {
-      for (int i = 0; i < numberOfPositions(); i++) {
-        int pzn = Integer.parseInt(orderFragments[3 + 2 * i]);
-        long quantity = Long.parseLong(orderFragments[4 + 2 * i]);
-        order.addPosition(pzn, quantity);
-      }
-    }
-    
     private long orderId() {
       return Long.parseLong(orderFragments[0]);
     }
 
     private OrderState state() {
       return OrderState.valueOf(orderFragments[1]);
+    }
+    
+    private void addPositions() {
+      for (int i = 0; i < numberOfPositions(); i++) {
+        int pzn = Integer.parseInt(orderFragments[3 + 2 * i]);
+        long quantity = Long.parseLong(orderFragments[4 + 2 * i]);
+        order.addPosition(pzn, quantity);
+      }
     }
 
     private boolean orderedOrFinished(ReplenishmentOrder order) {
