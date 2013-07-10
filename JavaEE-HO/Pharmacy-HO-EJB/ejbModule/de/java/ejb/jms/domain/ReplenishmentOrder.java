@@ -1,10 +1,13 @@
 package de.java.ejb.jms.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-public class ReplenishmentOrder {
+public class ReplenishmentOrder implements Serializable {
+
+  private static final long serialVersionUID = -1850882584651740416L;
 
   private Subsidiary subsidiary;
   private long orderId;

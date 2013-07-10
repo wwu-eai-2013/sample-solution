@@ -1,6 +1,10 @@
 package de.java.ejb.jms.domain;
 
-public class Position {
+import java.io.Serializable;
+
+public class Position implements Serializable {
+
+  private static final long serialVersionUID = -3449327475700083055L;
 
   private final int pzn;
   private final long quantity;
