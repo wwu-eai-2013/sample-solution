@@ -1,6 +1,7 @@
 package de.java.ejb.jms;
 
-import java.text.SimpleDateFormat;
+import static de.java.util.DateFormatter.format;
+
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -10,7 +11,6 @@ import de.java.domain.ReplenishmentOrder;
 
 public class OrderMarshaller {
   private static final String DELIMITER = ";";
-  private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
   public static String marshalAll(Collection<ReplenishmentOrder> orders) {
     String marshalledResult = "";
@@ -23,11 +23,11 @@ public class OrderMarshaller {
       if (order.getState() == OrderState.ORDERED
           || order.getState() == OrderState.FINISHED) {
         marshalledResult += DELIMITER;
-        marshalledResult += formatter.format(order.getExpectedDelivery());
+        marshalledResult += format(order.getExpectedDelivery());
       }
       if (order.getState() == OrderState.FINISHED) {
         marshalledResult += DELIMITER;
-        marshalledResult += formatter.format(order.getActualDelivery());
+        marshalledResult += format(order.getActualDelivery());
       }
       if (iterator.hasNext()) {
         marshalledResult += "\n";
@@ -45,11 +45,11 @@ public class OrderMarshaller {
     if (order.getState() == OrderState.ORDERED
         || order.getState() == OrderState.FINISHED) {
       marshalledResult += DELIMITER;
-      marshalledResult += formatter.format(order.getExpectedDelivery());
+      marshalledResult += format(order.getExpectedDelivery());
     }
     if (order.getState() == OrderState.FINISHED) {
       marshalledResult += DELIMITER;
-      marshalledResult += formatter.format(order.getActualDelivery());
+      marshalledResult += format(order.getActualDelivery());
     }
     return marshalledResult;
   }

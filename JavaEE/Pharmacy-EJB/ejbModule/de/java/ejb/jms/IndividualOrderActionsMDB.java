@@ -2,10 +2,7 @@ package de.java.ejb.jms;
 
 
 import static de.java.ejb.jms.OrderMarshaller.marshalSingle;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import static de.java.util.DateFormatter.parse;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.EJB;
@@ -29,8 +26,6 @@ import de.java.ejb.ReplenishmentOrderService;
     @ActivationConfigProperty(propertyName = "DLQMaxResent", propertyValue = "10"),
 })
 public class IndividualOrderActionsMDB extends AbstractJmsBean implements MessageListener {
-
-  private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
   @EJB
   ReplenishmentOrderService orderService;
@@ -117,18 +112,10 @@ public class IndividualOrderActionsMDB extends AbstractJmsBean implements Messag
     execute(new Action() {
       public void perform(long orderId, String[] contents) {
         validate(orderId, OrderState.POSTING);
-        orderService.updateExpectedDeliveryDate(orderId, parseDate(contents[2]));
+        orderService.updateExpectedDeliveryDate(orderId, parse(contents[2]));
         orderService.proceedToNextState(orderId);
       }
     }, incomingMessage);
-  }
-
-  private Date parseDate(String from) {
-    try {
-      return formatter.parse(from);
-    } catch (ParseException e) {
-      throw new RuntimeException("Could not parse from : " + from, e);
-    }
   }
 
   private void fulfillCancelAction(Message incomingMessage) throws JMSException {

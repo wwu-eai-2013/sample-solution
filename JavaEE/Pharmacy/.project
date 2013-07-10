@@ -7,6 +7,7 @@
 		<project>Pharmacy-EJB</project>
 		<project>Pharmacy-Web</project>
 		<project>Pharmacy-WebServices</project>
+		<project>Pharmacy-Util</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

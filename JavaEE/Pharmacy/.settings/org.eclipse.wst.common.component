@@ -15,5 +15,8 @@
         <dependent-module archiveName="Pharmacy-WebServices.jar" deploy-path="/lib" handle="module:/resource/Pharmacy-WebServices/Pharmacy-WebServices">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="Pharmacy-Util.jar" deploy-path="/lib" handle="module:/resource/Pharmacy-Util/Pharmacy-Util">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
     </wb-module>
 </project-modules>

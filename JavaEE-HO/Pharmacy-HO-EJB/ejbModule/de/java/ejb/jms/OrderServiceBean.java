@@ -3,7 +3,6 @@ package de.java.ejb.jms;
 import static de.java.ejb.jms.MessageUnmarshaller.unmarshalAll;
 import static de.java.ejb.jms.MessageUnmarshaller.unmarshalSingle;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -24,11 +23,10 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import de.java.ejb.jms.domain.ReplenishmentOrder;
 import de.java.ejb.jms.domain.Subsidiary;
+import de.java.util.DateFormatter;
 
 @Stateless
 public class OrderServiceBean extends AbstractJmsBean implements OrderService {
-
-  private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
   @Resource(lookup = "java:/topic/OrderActions")
   private Topic orderActions;
@@ -179,7 +177,7 @@ public class OrderServiceBean extends AbstractJmsBean implements OrderService {
   @Override
   public ReplenishmentOrder order(ReplenishmentOrder order, Date expectedDelivery) {
     return sendMessage(order.getSubsidiary(), "ORDER;" + order.getOrderId()
-        + ";" + formatter.format(expectedDelivery));
+        + ";" + DateFormatter.format(expectedDelivery));
   }
 
   @Override

@@ -1,15 +1,15 @@
 package de.java.ejb.jms;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import static de.java.util.DateFormatter.parse;
+
 import java.util.Date;
 
 import de.java.ejb.jms.domain.OrderState;
 import de.java.ejb.jms.domain.ReplenishmentOrder;
 import de.java.ejb.jms.domain.Subsidiary;
+import de.java.util.DateFormatter;
 
 abstract class OrderUnmarshaller {
-  private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
   protected String[] orderFragments;
   protected ReplenishmentOrder order = new ReplenishmentOrder();
@@ -36,11 +36,7 @@ abstract class OrderUnmarshaller {
   }
 
   Date parseDate(String from) {
-    try {
-      return formatter.parse(from);
-    } catch (ParseException e) {
-      throw new RuntimeException("Could not parse from : " + from, e);
-    }
+    return DateFormatter.parse(from);
   }
 
   static class Batch extends OrderUnmarshaller {
@@ -55,11 +51,11 @@ abstract class OrderUnmarshaller {
 
       if (orderedOrFinished(order)) {
         String expectedDelivery = orderFragments[2];
-        order.setExpectedDelivery(parseDate(expectedDelivery));
+        order.setExpectedDelivery(parse(expectedDelivery));
       }
       if (finished(order)) {
         String actualDelivery = orderFragments[3];
-        order.setActualDelivery(parseDate(actualDelivery));
+        order.setActualDelivery(parse(actualDelivery));
       }
       return order;
     }
@@ -79,11 +75,11 @@ abstract class OrderUnmarshaller {
 
       if (orderedOrFinished(order)) {
         String expectedDelivery = orderFragments[3 + 2 * numberOfPositions()];
-        order.setExpectedDelivery(parseDate(expectedDelivery));
+        order.setExpectedDelivery(parse(expectedDelivery));
       }
       if (finished(order)) {
         String actualDelivery = orderFragments[4 + 2 * numberOfPositions()];
-        order.setActualDelivery(parseDate(actualDelivery));
+        order.setActualDelivery(parse(actualDelivery));
       }
       return order;
     }
