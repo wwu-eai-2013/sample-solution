@@ -1,5 +1,7 @@
 package de.java.ejb.jms;
 
+import static de.java.util.MessageDelimiter.ORDER_DELIMITER;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -17,7 +19,7 @@ public class MessageUnmarshaller {
    public static Collection<ReplenishmentOrder> unmarshalAll(String messageText,
       Subsidiary subsidiary) {
     Collection<ReplenishmentOrder> result = new ArrayList<>();
-    String[] ordersAsStrings = messageText.split("\n");
+    String[] ordersAsStrings = messageText.split(ORDER_DELIMITER);
     for (int i = 0; i < ordersAsStrings.length; i++) {
       result.add(new OrderUnmarshaller.Batch(ordersAsStrings[i], subsidiary).convert());
     }

@@ -1,6 +1,7 @@
 package de.java.ejb.jms;
 
 import static de.java.util.DateFormatter.parse;
+import static de.java.util.MessageDelimiter.DELIMITER;
 
 import java.util.Date;
 
@@ -16,7 +17,7 @@ abstract class OrderUnmarshaller {
 
   protected OrderUnmarshaller(String orderString, Subsidiary subsidiary) {
     order.setSubsidiary(subsidiary);
-    orderFragments = orderString.split(";");
+    orderFragments = orderString.split(DELIMITER);
   }
 
   long orderId() {

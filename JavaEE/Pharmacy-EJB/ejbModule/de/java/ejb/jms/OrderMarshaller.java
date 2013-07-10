@@ -1,6 +1,8 @@
 package de.java.ejb.jms;
 
 import static de.java.util.DateFormatter.format;
+import static de.java.util.MessageDelimiter.DELIMITER;
+import static de.java.util.MessageDelimiter.ORDER_DELIMITER;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -10,7 +12,6 @@ import de.java.domain.Position;
 import de.java.domain.ReplenishmentOrder;
 
 public class OrderMarshaller {
-  private static final String DELIMITER = ";";
 
   public static String marshalAll(Collection<ReplenishmentOrder> orders) {
     String marshalledResult = "";
@@ -30,7 +31,7 @@ public class OrderMarshaller {
         marshalledResult += format(order.getActualDelivery());
       }
       if (iterator.hasNext()) {
-        marshalledResult += "\n";
+        marshalledResult += ORDER_DELIMITER;
       }
     }
     return marshalledResult;
