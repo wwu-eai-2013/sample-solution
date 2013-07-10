@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="/resources/master.xhtml">
+  <ui:define name="metadata">
+  </ui:define>
+  <ui:define name="title">Replenishment Order List</ui:define>
+  <ui:define name="content">
+    <h:dataTable value="#{replenishmentOrderList.orders}" var="cur"
+      styleClass="data-table" headerClass="data-cell header-cell"
+      columnClasses="data-cell,data-cell,data-cell,data-cell,data-cell,data-cell"
+      rendered="#{not empty replenishmentOrderList.orders}">
+    <h:column>
+        <f:facet name="header">Subsidiary</f:facet>
+      #{cur.subsidiary}
+    </h:column>
+    <h:column>
+        <f:facet name="header">ID</f:facet>
+      #{cur.orderId}
+    </h:column>
+      <h:column>
+        <f:facet name="header">Status</f:facet>
+      #{cur.state}
+    </h:column>
+    <h:column>
+      <f:facet name="header">Expected delivery</f:facet>
+      <h:outputText value="#{cur.expectedDelivery}">
+        <f:convertDateTime pattern="yyyy-MM-dd HH:mm" timeZone="Europe/Berlin"/>
+      </h:outputText>
+    </h:column>
+    <h:column>
+      <f:facet name="header">Actual delivery</f:facet>
+      <h:outputText value="#{cur.actualDelivery}">
+        <f:convertDateTime pattern="yyyy-MM-dd HH:mm" timeZone="Europe/Berlin"/>
+      </h:outputText>
+    </h:column>
+    <h:column>
+      <h:link outcome="/order/details.xhtml" value="Details">
+        <f:param name="subsidiary" value="#{cur.subsidiary}" />
+        <f:param name="id" value="#{cur.orderId}" />
+      </h:link>
+    </h:column>
+    </h:dataTable>
+  </ui:define>
+</ui:composition>
+</html>
