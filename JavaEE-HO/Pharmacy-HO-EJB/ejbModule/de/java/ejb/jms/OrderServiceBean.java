@@ -3,8 +3,11 @@ package de.java.ejb.jms;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.EJBException;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
 import javax.ejb.Stateless;
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
@@ -17,7 +20,8 @@ import javax.jms.Topic;
 import de.java.ejb.jms.domain.ReplenishmentOrder;
 import de.java.ejb.jms.domain.Subsidiary;
 
-@Stateless
+@Singleton
+@Startup
 public class OrderServiceBean extends AbstractJmsBean {
 
   @Resource(lookup = "java:/topic/OrderActions")
@@ -28,6 +32,12 @@ public class OrderServiceBean extends AbstractJmsBean {
 
   @Resource(lookup = "java:/queue/CSharpeOrderActions")
   private Queue csharpeQueue;
+
+  @PostConstruct
+  public void testAllOrders() {
+    Collection<ReplenishmentOrder> allOrders = getAllOrders();
+    System.out.println("retrieved " + allOrders.size() + " orders");
+  }
 
   public Collection<ReplenishmentOrder> getAllOrders() {
     final Collection<ReplenishmentOrder> result = new ArrayList<>();
