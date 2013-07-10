@@ -19,6 +19,8 @@ import javax.jms.TextMessage;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import de.java.domain.IllegalOrderStatusTransitionException;
+import de.java.domain.OrderState;
 import de.java.ejb.ReplenishmentOrderService;
 
 @MessageDriven(activationConfig = {
@@ -35,8 +37,7 @@ public class IndividualOrderActionsMDB extends AbstractJmsBean implements Messag
 
   public void onMessage(Message incomingMessage) {
     try {
-      String action = extractAction(incomingMessage);
-      switch (action) {
+      switch (extractAction(incomingMessage)) {
       case "GET":
         fulfillGetAction(incomingMessage);
         break;
@@ -56,23 +57,37 @@ public class IndividualOrderActionsMDB extends AbstractJmsBean implements Messag
       log.error("Error while processing message", e);
     }
   }
-  
+
   private String extractAction(Message fromMessage) throws JMSException {
     return ((TextMessage) fromMessage).getText().split(";")[0];
   }
 
   private void fulfillGetAction(Message incomingMessage) throws JMSException {
+    execute(new Action() {
+      public void perform(long orderId, String[] contents) {
+        // execute will always reply with the order corresponding to orderId
+      }}, incomingMessage);
+  }
+
+  private void execute(Action action, Message incomingMessage) throws JMSException {
     Session session = getConnection().createSession(false, Session.AUTO_ACKNOWLEDGE);
     TextMessage textMessage = (TextMessage) incomingMessage;
     String[] contents = textMessage.getText().split(";");
     try {
       long orderId = Long.parseLong(contents[1]);
+      
+      action.perform(orderId, contents);
+      
       replyWithCurrentOrder(incomingMessage, session, orderId);
     } finally {
       session.close();
     }
   }
-  
+
+  private interface Action {
+    void perform(long orderId, String[] contents);
+  }
+
   private void replyWithCurrentOrder(Message incomingMessage, Session session,
       long orderId) throws JMSException {
     TextMessage reply = session.createTextMessage();
@@ -84,30 +99,28 @@ public class IndividualOrderActionsMDB extends AbstractJmsBean implements Messag
   }
 
   private void fulfillPostAction(Message incomingMessage) throws JMSException {
-    Session session = getConnection().createSession(false, Session.AUTO_ACKNOWLEDGE);
-    TextMessage textMessage = (TextMessage) incomingMessage;
-    String[] contents = textMessage.getText().split(";");
-    try {
-      long orderId = Long.parseLong(contents[1]);
-      orderService.proceedToNextState(orderId);
-      replyWithCurrentOrder(incomingMessage, session, orderId);
-    } finally {
-      session.close();
+    execute(new Action() {
+      public void perform(long orderId, String[] contents) {
+        validate(orderId, OrderState.OPEN);
+        orderService.proceedToNextState(orderId);
+      }
+    }, incomingMessage);
+  }
+
+  private void validate(long orderId, OrderState inState) {
+    if (orderService.getOrder(orderId).getState() != inState) {
+      throw new IllegalOrderStatusTransitionException();
     }
   }
 
   private void fulfillOrderAction(Message incomingMessage) throws JMSException {
-    Session session = getConnection().createSession(false, Session.AUTO_ACKNOWLEDGE);
-    TextMessage textMessage = (TextMessage) incomingMessage;
-    String[] contents = textMessage.getText().split(";");
-    try {
-      long orderId = Long.parseLong(contents[1]);
-      orderService.updateExpectedDeliveryDate(orderId, parseDate(contents[2]));
-      orderService.proceedToNextState(orderId);
-      replyWithCurrentOrder(incomingMessage, session, orderId);
-    } finally {
-      session.close();
-    }
+    execute(new Action() {
+      public void perform(long orderId, String[] contents) {
+        validate(orderId, OrderState.POSTING);
+        orderService.updateExpectedDeliveryDate(orderId, parseDate(contents[2]));
+        orderService.proceedToNextState(orderId);
+      }
+    }, incomingMessage);
   }
 
   private Date parseDate(String from) {
@@ -119,15 +132,10 @@ public class IndividualOrderActionsMDB extends AbstractJmsBean implements Messag
   }
 
   private void fulfillCancelAction(Message incomingMessage) throws JMSException {
-    Session session = getConnection().createSession(false, Session.AUTO_ACKNOWLEDGE);
-    TextMessage textMessage = (TextMessage) incomingMessage;
-    String[] contents = textMessage.getText().split(";");
-    try {
-      long orderId = Long.parseLong(contents[1]);
-      orderService.cancel(orderId);
-      replyWithCurrentOrder(incomingMessage, session, orderId);
-    } finally {
-      session.close();
-    }
+    execute(new Action() {
+      public void perform(long orderId, String[] contents) {
+        orderService.cancel(orderId);
+      }
+    }, incomingMessage);
   }
 }
