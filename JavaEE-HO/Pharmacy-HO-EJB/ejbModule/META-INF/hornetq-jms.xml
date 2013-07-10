@@ -5,6 +5,12 @@
       <jms-topic name="OrderActions">
         <entry name="/topic/OrderActions" />
       </jms-topic>
+      <jms-queue name="CSharpeOrderActions">
+        <entry name="/queue/CSharpeOrderActions" />
+      </jms-queue>
+      <jms-queue name="JaVaOrderActions">
+        <entry name="/queue/JaVaOrderActions" />
+      </jms-queue>
     </jms-destinations>
   </hornetq-server>
 </messaging-deployment>
