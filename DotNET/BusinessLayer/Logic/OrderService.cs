@@ -12,7 +12,7 @@ namespace Pharmacy.BusinessLayer.Logic
         public static ICollection<ReplenishmentOrder> GetAllOrders()
         {
             using (PharmacyContainer db = new PharmacyContainer())
-                return db.ReplenishmentOrderSet.ToList();
+                return db.ReplenishmentOrderSet.OrderBy(o => o.State).ToList();
         }
 
         public static ReplenishmentOrder GetOrder(Int32 id)
