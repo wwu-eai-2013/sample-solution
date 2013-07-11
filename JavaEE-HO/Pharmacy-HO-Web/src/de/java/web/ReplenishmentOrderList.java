@@ -14,7 +14,12 @@ public class ReplenishmentOrderList {
   @EJB
   private OrderService orderService;
 
+  private Collection<ReplenishmentOrder> orders;
+
   public Collection<ReplenishmentOrder> getOrders() {
-    return orderService.getAllOrders();
+    if (orders == null) {
+      orders = orderService.getAllOrders();
+    }
+    return orders;
   }
 }
