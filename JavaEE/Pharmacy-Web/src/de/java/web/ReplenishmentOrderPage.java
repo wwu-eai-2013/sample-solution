@@ -24,7 +24,6 @@ public class ReplenishmentOrderPage {
 
   private ReplenishmentOrder order;
 
-  private Date expectedDelivery;
   private Date actualDelivery;
 
   public long getId() {
@@ -38,7 +37,6 @@ public class ReplenishmentOrderPage {
 
   public void init() {
     order = null;
-    setExpectedDelivery(new Date());
     setActualDelivery(new Date());
   }
 
@@ -61,9 +59,6 @@ public class ReplenishmentOrderPage {
   }
 
   public String proceed() {
-    if (order.getState() == OrderState.POSTING) {
-      orderService.updateExpectedDeliveryDate(order.getId(), getExpectedDelivery());
-    }
     if (order.getState() == OrderState.ORDERED) {
       orderService.updateActualDeliveryDate(order.getId(), getActualDelivery());
     }
@@ -93,14 +88,6 @@ public class ReplenishmentOrderPage {
 
   public void setOrder(ReplenishmentOrder order) {
     this.order = order;
-  }
-
-  public Date getExpectedDelivery() {
-    return expectedDelivery;
-  }
-
-  public void setExpectedDelivery(Date expectedDelivery) {
-    this.expectedDelivery = expectedDelivery;
   }
 
   public Date getActualDelivery() {

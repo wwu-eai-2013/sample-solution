@@ -20,22 +20,14 @@
           footerClass="form-footer" styleClass="details-table">
           State
           <h:outputText value="#{replenishmentOrderPage.order.state}" />
-          <h:panelGroup rendered="#{replenishmentOrderPage.order.state == 'POSTING' or replenishmentOrderPage.order.state == 'ORDERED' or replenishmentOrderPage.order.state == 'FINISHED'}">
+          <h:panelGroup rendered="#{replenishmentOrderPage.order.state == 'ORDERED' or replenishmentOrderPage.order.state == 'FINISHED'}">
             Expected delivery date
           </h:panelGroup>
-          <h:panelGroup rendered="#{replenishmentOrderPage.order.state == 'POSTING' or replenishmentOrderPage.order.state == 'ORDERED' or replenishmentOrderPage.order.state == 'FINISHED'}">
-            <h:inputText id="expectedDelivery" size="16"
-              required="true" requiredMessage="Expected delivery date required"
-              rendered="#{replenishmentOrderPage.order.state == 'POSTING'}"
-              value="#{replenishmentOrderPage.expectedDelivery}">
-              <f:convertDateTime pattern="yyyy-MM-dd HH:mm" timeZone="Europe/Berlin"/>
-            </h:inputText>
-            <h:outputText
-              rendered="#{replenishmentOrderPage.order.state == 'ORDERED' or replenishmentOrderPage.order.state == 'FINISHED'}"
-              value="#{replenishmentOrderPage.order.expectedDelivery}">
-              <f:convertDateTime pattern="yyyy-MM-dd HH:mm" timeZone="Europe/Berlin" />
-            </h:outputText>
-          </h:panelGroup>
+          <h:outputText
+            rendered="#{replenishmentOrderPage.order.state == 'ORDERED' or replenishmentOrderPage.order.state == 'FINISHED'}"
+            value="#{replenishmentOrderPage.order.expectedDelivery}">
+            <f:convertDateTime pattern="yyyy-MM-dd HH:mm" timeZone="Europe/Berlin" />
+          </h:outputText>
           <h:panelGroup rendered="#{replenishmentOrderPage.order.state == 'ORDERED' or replenishmentOrderPage.order.state == 'FINISHED'}">
             Actual delivery date
           </h:panelGroup>
@@ -54,18 +46,11 @@
           </h:panelGroup>
           <f:facet name="footer">
             <h:commandButton
-              disabled="#{not replenishmentOrderPage.order.state.proceedable}"
-              rendered="#{replenishmentOrderPage.order.state.proceedable}"
+              rendered="#{replenishmentOrderPage.order.state == 'ORDERED'}"
               value="Proceed to #{replenishmentOrderPage.order.state.next}"
               action="#{replenishmentOrderPage.proceed}" />
-            <h:commandButton
-              disabled="#{not replenishmentOrderPage.order.state.cancellable}"
-              rendered="#{replenishmentOrderPage.order.state.cancellable}"
-              value="Cancel"
-              action="#{replenishmentOrderPage.cancel}" />
           </f:facet>
         </h:panelGrid>
-        <h:messages for="expectedDelivery" styleClass="error"/>
         <h:messages for="actualDelivery" styleClass="error"/>
         <h:dataTable value="#{replenishmentOrderPage.order.positions}" var="cur"
           styleClass="data-table" headerClass="data-cell header-cell"
