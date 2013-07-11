@@ -25,20 +25,44 @@ namespace JmsClient
             using (IConnection connection = factory.CreateConnection())
             using (session = connection.CreateSession(AcknowledgementMode.AutoAcknowledge))
             {
-                // durable consumers require a clientId
-                connection.ClientId = "CSharpe";
-
-                using (IMessageConsumer orderActionConsumer = session.CreateDurableConsumer(((ITopic)session.GetDestination("topic://OrderActions")), "CSharpeOrderActionListenener", null, false))
+                using (IMessageConsumer orderActionConsumer = session.CreateConsumer(((ITopic)session.GetDestination("topic://OrderActions")), null, false))
+                using (IMessageConsumer individualOrderActionConsumer = session.CreateConsumer((IQueue)session.GetDestination("queue://CSharpeOrderActions"), null, false))
                 {
                     connection.Start();
 
-                    orderActionConsumer.Listener += new MessageListener(OrderActionListener.OnOrderAction);
+                    orderActionConsumer.Listener += new MessageListener(OnOrderAction);
                     Console.WriteLine("orderActionConsumer started, waiting for messages...");
+
+                    individualOrderActionConsumer.Listener += new MessageListener(OnIndividualOrderAction);
+                    Console.WriteLine("individualOrderActionConsumer started, waiting for messages...");
 
                     Console.WriteLine("(Press ENTER to stop.)");
                     Console.ReadLine();
                 }
             }
+        }
+
+        private static void OnOrderAction(IMessage message)
+        {
+            Console.WriteLine(((ITextMessage)message).Text);
+            string content = ((ITextMessage)message).Text;
+            if (content == "ALL")
+            {
+                using (IMessageProducer producer = session.CreateProducer(message.NMSReplyTo))
+                {
+                    ITextMessage reply = producer.CreateTextMessage();
+                    reply.Properties.SetString("subsidiary", "CSharpe");
+                    reply.Text = "5;FINISHED;2013-05-21 15:35;2014-06-12 18:22"
+                       + "\n4;OPEN;1";
+
+                    producer.Send(reply);
+                }
+            }
+        }
+
+        private static void OnIndividualOrderAction(IMessage message)
+        {
+            Console.WriteLine(((ITextMessage)message).Text);
         }
     }
 }
