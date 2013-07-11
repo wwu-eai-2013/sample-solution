@@ -33,6 +33,19 @@ namespace Pharmacy.BusinessLayer.Logic
             return result;
         }
 
+        public static ReplenishmentOrder GetOrderWithPositions(Int32 id)
+        {
+            using (PharmacyContainer db = new PharmacyContainer())
+            {
+                ReplenishmentOrder result = (from o in db.ReplenishmentOrderSet.Include("Positions") where o.Id == id select o).FirstOrDefault();
+
+                if (result == default(ReplenishmentOrder))
+                    throw new ArgumentException(String.Format("Order with ID {0} not found", id.ToString()));
+
+                return result;
+            }
+        }
+
         public static ICollection<Position> GetPositionsForOrder(Int32 id)
         {
             using (PharmacyContainer db = new PharmacyContainer())

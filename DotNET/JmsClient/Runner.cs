@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Apache.NMS;
+using Pharmacy.BusinessLayer.Data;
+using Pharmacy.BusinessLayer.Logic;
 
 namespace JmsClient
 {
@@ -44,7 +46,7 @@ namespace JmsClient
 
         private static void OnOrderAction(IMessage message)
         {
-            Console.WriteLine(((ITextMessage)message).Text);
+            Console.WriteLine("Received message: " + ((ITextMessage)message).Text);
             string content = ((ITextMessage)message).Text;
             if (content == "ALL")
             {
@@ -52,9 +54,7 @@ namespace JmsClient
                 {
                     ITextMessage reply = producer.CreateTextMessage();
                     reply.Properties.SetString("subsidiary", "CSharpe");
-                    reply.Text = "5;FINISHED;2013-05-21 15:35;2014-06-12 18:22"
-                       + "\n4;OPEN;1";
-
+                    reply.Text = OrderMarshaller.MarshalAll(OrderService.GetAllOrders());
                     producer.Send(reply);
                 }
             }
@@ -62,7 +62,52 @@ namespace JmsClient
 
         private static void OnIndividualOrderAction(IMessage message)
         {
-            Console.WriteLine(((ITextMessage)message).Text);
+            Console.WriteLine("Received message: " + ((ITextMessage)message).Text);
+
+            string[] fragments = ((ITextMessage)message).Text.Split(OrderMarshaller.DELIMITER);
+            string action = fragments[0];
+            Int32 orderId = Int32.Parse(fragments[1]);
+            switch (action)
+            {
+                case "GET":
+                    {
+                        // nothing todo, just send reply
+                    }
+                    break;
+                case "POST":
+                    {
+                        ValidateOrderIsInState(orderId, OrderState.Open);
+                        OrderService.ProceedToNextState(orderId);
+                    }
+                    break;
+                case "ORDER":
+                    {
+                        ValidateOrderIsInState(orderId, OrderState.Posting);
+                        OrderService.UpdateExpectedDeliveryDate(orderId, DateTime.Parse(fragments[2]));
+                        OrderService.ProceedToNextState(orderId);
+                    }
+                    break;
+                case "CANCEL":
+                    {
+                        ValidateOrderIsInState(orderId, OrderState.Posting);
+                        OrderService.Cancel(orderId);
+                    }
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+            using (IMessageProducer producer = session.CreateProducer(message.NMSReplyTo))
+            {
+                ITextMessage reply = producer.CreateTextMessage();
+                reply.Text = OrderMarshaller.MarshalSingle(OrderService.GetOrderWithPositions(orderId));
+                producer.Send(reply);
+            }
+        }
+
+        private static void ValidateOrderIsInState(int orderId, OrderState state)
+        {   
+            if (OrderService.GetOrder(orderId).State != state)
+                throw new IllegalStateException(String.Format("Order with id {0} was expected to be in state: {1}", orderId, state));
         }
     }
 }
