@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestLayer", "WcfRestService
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JmsClient", "JmsClient\JmsClient.csproj", "{606F452D-2E7E-4509-ADF3-091AC1BBC501}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JmsSender", "JmsSender\JmsSender.csproj", "{47857F26-8FAC-4BB3-BE7D-C8715793F35E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,10 +31,6 @@ Global
 		{606F452D-2E7E-4509-ADF3-091AC1BBC501}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{606F452D-2E7E-4509-ADF3-091AC1BBC501}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{606F452D-2E7E-4509-ADF3-091AC1BBC501}.Release|Any CPU.Build.0 = Release|Any CPU
-		{47857F26-8FAC-4BB3-BE7D-C8715793F35E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{47857F26-8FAC-4BB3-BE7D-C8715793F35E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{47857F26-8FAC-4BB3-BE7D-C8715793F35E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{47857F26-8FAC-4BB3-BE7D-C8715793F35E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
