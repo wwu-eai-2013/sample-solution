@@ -22,20 +22,6 @@
                     <asp:Label ID="ExpectedDeliveryLabel" runat="server"
                         Text='<%# Eval("ExpectedDelivery", "{0:dd.MM.yyyy HH:mm}") %>' 
                         Visible='<%# ((OrderState)Eval("State")) != OrderState.Posting %>' />
-                    <asp:TextBox ID="ExpectedDeliveryBox"
-                        TextMode="DateTime"
-                        Text='<%# String.Format("{0:dd.MM.yyyy HH:mm}", DateTime.Now) %>'
-                        Visible='<%# ((OrderState)Eval("State")) == OrderState.Posting %>'
-                        runat="server" />
-                    <asp:RequiredFieldValidator ID="RequiredExpectedDelivery" ControlToValidate="ExpectedDeliveryBox"
-                        EnableClientScript="false" runat="server">
-                        Expected delivery date required
-                    </asp:RequiredFieldValidator>
-                    <asp:RegularExpressionValidator ID="ValidExpectedDelivery" ControlToValidate="ExpectedDeliveryBox"
-                        EnableClientScript="false" runat="server"
-                        ValidationExpression="\d{2}.\d{2}.\d{4} \d{2}:\d{2}">
-                        Invalid date (e.g. 24.12.2013 18:32)
-                    </asp:RegularExpressionValidator>
                 </ItemTemplate>
             </asp:TemplateField>
             <asp:TemplateField HeaderText="Actual delivery date">
@@ -63,11 +49,8 @@
                 <ItemTemplate>
                     <asp:Button ID="NextStateButton" runat="server" OnCommand="NextStateButton_Command"
                         Text='<%# "Proceed to " + ((OrderState)Eval("State")).Next() %>'
-                        Enabled='<%# ((OrderState)Eval("State")).Proceedable() %>'
-                        Visible='<%# ((OrderState)Eval("State")).Proceedable() %>' />
-                    <asp:Button ID="CancelButton" runat="server" OnCommand="Cancel_Command" Text="Cancel"
-                        Enabled='<%# ((OrderState)Eval("State")).Cancellable() %>'
-                        Visible='<%# ((OrderState)Eval("State")).Cancellable() %>' />
+                        Enabled='<%# ((OrderState)Eval("State")) == OrderState.Ordered %>'
+                        Visible='<%# ((OrderState)Eval("State")) == OrderState.Ordered %>' />
                 </ItemTemplate>
             </asp:TemplateField>
         </Fields>
