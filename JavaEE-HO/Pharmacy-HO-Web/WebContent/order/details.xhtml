@@ -58,7 +58,7 @@
         <h:messages for="expectedDelivery" styleClass="error"/>
         <h:dataTable value="#{replenishmentOrderPage.order.positions}" var="cur"
           styleClass="data-table" headerClass="data-cell header-cell"
-          columnClasses="data-cell,data-cell"
+          columnClasses="data-cell,data-cell,data-cell"
           rendered="#{not empty replenishmentOrderPage.order.positions}">
           <h:column>
             <f:facet name="header">PZN</f:facet>
@@ -67,6 +67,11 @@
           <h:column>
             <f:facet name="header">Quantity</f:facet>
             #{cur.quantity}
+          </h:column>
+          <h:column>
+            <h:link outcome="/drugStats/details.xhtml" value="Details">
+              <f:param name="pzn" value="#{cur.pzn}"></f:param>
+            </h:link>
           </h:column>
         </h:dataTable>
       </h:form>
