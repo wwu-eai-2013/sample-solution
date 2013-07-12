@@ -35,4 +35,10 @@ public class DeviationTest {
   shouldNotReturn1440MinutesWhenTheyAreInFactZero() {
     assertThat(new Deviation(86400).minutes(), is(0l));
   }
+
+  @Test public void
+  shouldDealWithNegativeInputAsIfItWasPositive() {
+    assertThat(new Deviation(-86400).days(), is(1l));
+     
+  }
 }

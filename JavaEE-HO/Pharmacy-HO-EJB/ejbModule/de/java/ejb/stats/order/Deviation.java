@@ -21,24 +21,28 @@ public class Deviation implements Serializable {
   public long getTotalSeconds() {
     return deviation;
   }
+
+  private long getAbsoluteDeviation() {
+    return Math.abs(deviation);
+  }
   
   long days() {
-    return deviation / (24*60*60);
+    return getAbsoluteDeviation() / (24*60*60);
   }
   
   long hours() {
     long daysInHours = days() * 24;
-    return deviation / (60*60) - daysInHours;
+    return getAbsoluteDeviation() / (60*60) - daysInHours;
   }
 
   long minutes() {
     long hoursInMinutes = hours() * 60;
     long daysInMinutes = days() * 24 * 60;
-    return deviation / 60 - hoursInMinutes - daysInMinutes;
+    return getAbsoluteDeviation() / 60 - hoursInMinutes - daysInMinutes;
   }
 
   long seconds() {
-    return deviation % 60;
+    return getAbsoluteDeviation() % 60;
   }
 
   @Override
