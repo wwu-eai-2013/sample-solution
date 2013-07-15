@@ -65,7 +65,7 @@ public class OrderServiceBean extends AbstractJmsBean implements OrderService {
               MessageConsumer consumer = session.createConsumer(replyQueue, "subsidiary='JaVa'");
               TextMessage resultMsg = (TextMessage) consumer.receive(1000);
               if (resultMsg != null) {
-                result.addAll(convert(resultMsg, Subsidiary.JaVa, resultMsg.getText()));
+                result.addAll(convert(Subsidiary.JaVa, resultMsg.getText()));
               }
             }
             
@@ -74,7 +74,7 @@ public class OrderServiceBean extends AbstractJmsBean implements OrderService {
               MessageConsumer consumer = session.createConsumer(replyQueue, "subsidiary='CSharpe'");
               TextMessage resultMsg = (TextMessage) consumer.receive(1000);
               if (resultMsg != null) {
-                result.addAll(convert(resultMsg, Subsidiary.CSharpe, resultMsg.getText()));
+                result.addAll(convert(Subsidiary.CSharpe, resultMsg.getText()));
               }
             }
           }
@@ -89,8 +89,8 @@ public class OrderServiceBean extends AbstractJmsBean implements OrderService {
     return result;
   }
 
-  private Collection<ReplenishmentOrder> convert(TextMessage msg,
-      Subsidiary subsidiary, String messageText) {
+  private Collection<ReplenishmentOrder> convert(Subsidiary subsidiary,
+      String messageText) {
     return unmarshalAll(messageText, subsidiary);
   }
 
