@@ -18,6 +18,9 @@ public class MessageUnmarshaller {
    */
    public static Collection<ReplenishmentOrder> unmarshalAll(String messageText,
       Subsidiary subsidiary) {
+    if (messageText.isEmpty()) {
+      return new ArrayList<>();
+    }
     Collection<ReplenishmentOrder> result = new ArrayList<>();
     String[] ordersAsStrings = messageText.split(ORDER_DELIMITER);
     for (int i = 0; i < ordersAsStrings.length; i++) {
