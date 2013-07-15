@@ -2,6 +2,7 @@ package de.java.ejb.jms;
 
 import static de.java.ejb.jms.MessageUnmarshaller.unmarshalAll;
 import static de.java.ejb.jms.MessageUnmarshaller.unmarshalSingle;
+import static de.java.util.MessageDelimiter.DELIMITER;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -121,7 +122,7 @@ public class OrderServiceBean extends AbstractJmsBean implements OrderService {
 
   @Override
   public ReplenishmentOrder getOrder(final Subsidiary subsidiary, final long orderId) {
-    return sendMessage(subsidiary, "GET;" + orderId);
+    return sendMessage(subsidiary, "GET" + DELIMITER + orderId);
   }
 
   private ReplenishmentOrder sendMessage(final Subsidiary subsidiary,
@@ -171,18 +172,18 @@ public class OrderServiceBean extends AbstractJmsBean implements OrderService {
 
   @Override
   public ReplenishmentOrder post(ReplenishmentOrder order) {
-    return sendMessage(order.getSubsidiary(), "POST;" + order.getOrderId());
+    return sendMessage(order.getSubsidiary(), "POST" + DELIMITER + order.getOrderId());
   }
 
   @Override
   public ReplenishmentOrder order(ReplenishmentOrder order, Date expectedDelivery) {
-    return sendMessage(order.getSubsidiary(), "ORDER;" + order.getOrderId()
-        + ";" + DateFormatter.format(expectedDelivery));
+    return sendMessage(order.getSubsidiary(), "ORDER" + DELIMITER + order.getOrderId()
+        + DELIMITER + DateFormatter.format(expectedDelivery));
   }
 
   @Override
   public ReplenishmentOrder cancel(ReplenishmentOrder order) {
-    return sendMessage(order.getSubsidiary(), "CANCEL;" + order.getOrderId());
+    return sendMessage(order.getSubsidiary(), "CANCEL" + DELIMITER + order.getOrderId());
   }
 
 }
